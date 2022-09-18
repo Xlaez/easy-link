@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 	"time"
 
@@ -42,7 +43,6 @@ func createRandomUser(t *testing.T) User {
 
 	require.Equal(t, field, user.Field)
 	require.Equal(t, hashedPassword, user.Password)
-	require.Equal(t, arg.Bio, user.Bio)
 
 	require.NotZero(t, user.CreatedAt)
 	require.NotZero(t, user.UpdatedAt)
@@ -122,10 +122,11 @@ func TestUpdateEmail(t *testing.T) {
 
 func TestUpdateBio(t *testing.T) {
 	user1 := createRandomUser(t)
+	var Bio sql.NullString = utils.RandomNullStr(50)
 
 	err := testQueries.UpdateBio(context.Background(), UpdateBioParams{
 		ID:        user1.ID,
-		Bio:       utils.RandomStr(50),
+		Bio:       Bio,
 		UpdatedAt: time.Now(),
 	})
 
@@ -137,10 +138,10 @@ func TestUpdateOther(t *testing.T) {
 
 	err := testQueries.UpdateOther(context.Background(), UpdateOtherParams{
 		ID:        user1.ID,
-		InLink:    utils.RandomStr(10),
-		TwLink:    utils.RandomStr(10),
-		WbLink:    utils.RandomStr(30),
-		GbLink:    utils.RandomStr(19),
+		InLink:    utils.RandomNullStr(10),
+		TwLink:    utils.RandomNullStr(10),
+		WbLink:    utils.RandomNullStr(30),
+		GbLink:    utils.RandomNullStr(19),
 		UpdatedAt: time.Now(),
 	})
 

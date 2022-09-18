@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"database/sql"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -41,6 +42,19 @@ func RandomStr(n int) string {
 	}
 
 	return sb.String()
+}
+
+func RandomNullStr(n int) sql.NullString {
+	var sb sql.NullString
+
+	k := len(alp)
+
+	for i := 0; i < n; i++ {
+		c := alp[rand.Intn(k)]
+		sb.Scan(c)
+	}
+
+	return sb
 }
 
 // generates a random user name

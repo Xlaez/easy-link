@@ -12,6 +12,7 @@ type Config struct {
 	ServerAddress       string        `mapstructure:"SERVER_ADDRESS"`
 	TokenSymmetricKey   string        `mapstructure:"TOKEN_KEY"`
 	AccessTokenDuration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
+	CloudinaryEnv       string        `mapstructure:"CLOUDINARY_API_ENV"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

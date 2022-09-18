@@ -58,3 +58,19 @@ type UpdateBioRequest struct {
 	Bio       string    `json:"bio" binding:"required,min=20"`
 	UpdatedAT time.Time `json:"updated_at"`
 }
+
+type UploadAvatarReq struct {
+	ID string `form:"id" binding:"required"`
+}
+
+type DeleteAccountReq struct {
+	Password string `json:"password" binding:"required,min=7"`
+}
+
+type UpdateOtherReq struct {
+	ID     string `json:"id"`
+	InLink string `json:"inLink"`
+	TwLink string `json:"twLink"`
+	WbLink string `json:"wbLink"`
+	GbLink string `json:"gbLink"`
+}

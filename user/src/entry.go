@@ -21,6 +21,8 @@ func (s *Server) Router() {
 	userRoutes.GET("/all", s.GetUsers)
 	userRoutes.PATCH("/bio", s.UpdateUserBio)
 	userRoutes.DELETE("/account", s.DeleteAccount)
+	userRoutes.PATCH("/others", s.UpdateOther)
+	userRoutes.PUT("/avatar", s.UploadAvatar)
 
 	s.router = router
 }
