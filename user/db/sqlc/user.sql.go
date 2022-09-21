@@ -322,3 +322,19 @@ func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) 
 	_, err := q.db.ExecContext(ctx, updatePassword, arg.ID, arg.Password)
 	return err
 }
+
+const validate = `-- name: Validate :exec
+ update "user"
+    set valid=$2
+  where id = $1
+`
+
+type ValidateParams struct {
+	ID    uuid.UUID `json:"id"`
+	Valid bool      `json:"valid"`
+}
+
+func (q *Queries) Validate(ctx context.Context, arg ValidateParams) error {
+	_, err := q.db.ExecContext(ctx, validate, arg.ID, arg.Valid)
+	return err
+}

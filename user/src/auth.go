@@ -5,10 +5,15 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"time"
 
 	db "github.com/Xlaez/easy-link/db/sqlc"
+	"github.com/Xlaez/easy-link/libs"
+	"github.com/Xlaez/easy-link/token/auth"
 	"github.com/Xlaez/easy-link/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/gomodule/redigo/redis"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -49,14 +54,13 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		AccType:    request.AccType,
 	}
 
-	token, err := createToken(s, arg.Email, s.config)
+	u, err := s.store.CreateUser(context.Background(), arg)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
 		return
 	}
-
-	_, err = s.store.CreateUser(context.Background(), arg)
+	token, err := createToken(s, arg.Email, u.ID, s.config)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
@@ -71,6 +75,32 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, result)
+}
+
+func (s *Server) ValidateUser(ctx *gin.Context) {
+	var req ValidateAccountReq
+
+	if err := ctx.BindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	user, err := s.tokenMaker.VerifyToken(req.Token)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	if err = s.store.Validate(ctx, db.ValidateParams{
+		ID:    user.ID,
+		Valid: true,
+	}); err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "accepted"})
 }
 
 func (s *Server) logInUser(ctx *gin.Context) {
@@ -103,7 +133,7 @@ func (s *Server) logInUser(ctx *gin.Context) {
 		return
 	}
 
-	token, err := createToken(s, user.Email, s.config)
+	token, err := createToken(s, user.Email, user.ID, s.config)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
@@ -114,9 +144,162 @@ func (s *Server) logInUser(ctx *gin.Context) {
 
 }
 
-func createToken(s *Server, email string, config utils.Config) (string, error) {
+func (s *Server) ForgetPassword(ctx *gin.Context) {
+	var req UpdatePasswordReq
+
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	_, err := s.store.IsEmailTaken(ctx, req.Email)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errors.New("user does not exist"))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	randomInt := utils.RandomIntegers(6)
+	_, err = libs.NewPool().Get().Do("SET", randomInt, req.Email)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"digits": randomInt})
+	// send email
+}
+
+func (s *Server) UpdatePassword(ctx *gin.Context) {
+	var req DigitsReq
+
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	e, err := redis.String(libs.NewPool().Get().Do("GET", req.Digits))
+
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, errorRes(err))
+		return
+	}
+
+	// remember to update this parts to query once
+	u, err := s.store.IsEmailTaken(ctx, e)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	id := u.ID
+
+	password, err := utils.HashPassword(req.Password)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	if err = s.store.UpdatePassword(ctx, db.UpdatePasswordParams{
+		ID:       id,
+		Password: password,
+	}); err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	// send email
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
+}
+
+type UpdateEmailReqParams struct {
+	Password string `json:"password"`
+}
+
+func (s *Server) UpdateEmailReq(ctx *gin.Context) {
+	var req UpdateEmailReqParams
+
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	id := authPayload.ID
+	user, err := s.store.GetUser(ctx, id)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	if err = utils.ComparePassword(req.Password, user.Password); err != nil {
+		if err == bcrypt.ErrMismatchedHashAndPassword {
+			ctx.JSON(http.StatusForbidden, errorRes(errors.New("password does not match")))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	randomInt := utils.RandomIntegers(6)
+	_, err = libs.NewPool().Get().Do("SET", randomInt, id)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"digits": randomInt})
+}
+
+type ChangeEmailReq struct {
+	Digits string `json:"digits" binding:"required,min=6,max=6"`
+	Email  string `json:"email" binding:"required,email"`
+}
+
+func (s *Server) ChangeEmail(ctx *gin.Context) {
+	var req ChangeEmailReq
+
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	id, err := redis.String(libs.NewPool().Get().Do("GET", req.Digits))
+
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, errorRes(err))
+		return
+	}
+
+	uid := uuid.MustParse(id)
+
+	if err = s.store.UpdateEmail(ctx, db.UpdateEmailParams{
+		ID:        uid,
+		Email:     req.Email,
+		UpdatedAt: time.Now(),
+	}); err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
+}
+
+func createToken(s *Server, email string, id uuid.UUID, config utils.Config) (string, error) {
 	accToken, err := s.tokenMaker.CreateToken(
 		email,
+		id,
 		s.config.AccessTokenDuration,
 	)
 

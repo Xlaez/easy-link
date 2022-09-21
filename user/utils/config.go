@@ -13,6 +13,12 @@ type Config struct {
 	TokenSymmetricKey   string        `mapstructure:"TOKEN_KEY"`
 	AccessTokenDuration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	CloudinaryEnv       string        `mapstructure:"CLOUDINARY_API_ENV"`
+	OauthAccessToken    string        `mapstructure:"OAUTH_ACCESS_TOKEN"`
+	OauthRefreshToken   string        `mapstructure:"OAUTH_REFRESH_TOKEN"`
+	OauthClientId       string        `mapstructure:"OAUTH_CLIENT_ID"`
+	OauthClientSecret   string        `mapstructure:"OAUTH_CLIENT_SECRET"`
+	AppMail             string        `mapstructure:"APP_MAIL"`
+	AppPassword         string        `mapstructure:"APP_PASS"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

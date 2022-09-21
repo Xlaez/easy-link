@@ -70,3 +70,8 @@ update "user"
    set email=$2,
    updated_at=$3
  where id = $1;
+
+ -- name: Validate :exec
+ update "user"
+    set valid=$2
+  where id = $1;

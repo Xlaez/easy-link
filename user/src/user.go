@@ -91,6 +91,7 @@ func (s *Server) UpdateUserBio(ctx *gin.Context) {
 
 	bio := sql.NullString{
 		String: request.Bio,
+		Valid:  true,
 	}
 
 	arg := db.UpdateBioParams{
@@ -130,14 +131,15 @@ func (s *Server) UploadAvatar(ctx *gin.Context) {
 
 	publicId := sql.NullString{
 		String: pu,
+		Valid:  true,
 	}
 
 	url := sql.NullString{
 		String: su,
+		Valid:  true,
 	}
 
 	id := uuid.MustParse(req.ID)
-
 	err := s.store.UpdateAvatar(ctx, db.UpdateAvatarParams{
 		ID:        id,
 		AvatarUrl: url,
@@ -150,7 +152,7 @@ func (s *Server) UploadAvatar(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, "updated")
+	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }
 
 func (s *Server) UpdateOther(ctx *gin.Context) {
@@ -161,18 +163,25 @@ func (s *Server) UpdateOther(ctx *gin.Context) {
 		return
 	}
 
-	id := uuid.MustParse(req.ID)
+	uid := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	id := uid.ID
+
 	lk := sql.NullString{
 		String: req.InLink,
+		Valid:  true,
 	}
 	wl := sql.NullString{
 		String: req.WbLink,
+		Valid:  true,
 	}
 	gl := sql.NullString{
 		String: req.GbLink,
+		Valid:  true,
 	}
 	tl := sql.NullString{
 		String: req.GbLink,
+		Valid:  true,
 	}
 
 	if err := s.store.UpdateOther(ctx, db.UpdateOtherParams{
@@ -187,7 +196,7 @@ func (s *Server) UpdateOther(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, "updated")
+	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }
 
 func (s *Server) DeleteAccount(ctx *gin.Context) {
@@ -219,4 +228,25 @@ func (s *Server) DeleteAccount(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"msg": "deleted"})
+}
+
+func (s *Server) ChangeActiveStatus(ctx *gin.Context) {
+	var req SetActivityReq
+
+	if err := ctx.BindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	uid := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	if err := s.store.SetActivity(ctx, db.SetActivityParams{
+		ID:     uid.ID,
+		Active: req.Active,
+	}); err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }

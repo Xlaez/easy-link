@@ -67,10 +67,27 @@ type DeleteAccountReq struct {
 	Password string `json:"password" binding:"required,min=7"`
 }
 
+type UpdatePasswordReq struct {
+	Email string `json:"email" binding:"required"`
+	// Password string `json:"password" binding:"required"`
+}
+
+type DigitsReq struct {
+	Digits   string `json:"digits"`
+	Password string `json:"password" binding:"required,min=7"`
+}
+
 type UpdateOtherReq struct {
-	ID     string `json:"id"`
 	InLink string `json:"inLink"`
 	TwLink string `json:"twLink"`
 	WbLink string `json:"wbLink"`
 	GbLink string `json:"gbLink"`
+}
+
+type SetActivityReq struct {
+	Active bool `form:"active"`
+}
+
+type ValidateAccountReq struct {
+	Token string `uri:"token" biniding:"required"`
 }
