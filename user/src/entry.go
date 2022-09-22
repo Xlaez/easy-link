@@ -30,6 +30,14 @@ func (s *Server) Router() {
 	userRoutes.POST("/update-email", s.UpdateEmailReq)
 	userRoutes.PATCH("/change-email", s.ChangeEmail)
 	userRoutes.PATCH("/activity", s.ChangeActiveStatus)
+	userRoutes.POST("/send-request", s.SendReq)
+	userRoutes.GET("/connection-requests", s.GetUserRequests)
+	userRoutes.GET("/request/:id", s.GetAUserReq)
+	userRoutes.DELETE("/request/:id", s.RejectConnectionRequest)
+	userRoutes.POST("/accept-request", s.AcceptConnection)
+	userRoutes.GET("/connections", s.GetUserConnections)
+	userRoutes.GET("/sent-requests", s.GetSentRequests)
+	userRoutes.DELETE("/un-connect/:id", s.UnConnectUser)
 
 	s.router = router
 }

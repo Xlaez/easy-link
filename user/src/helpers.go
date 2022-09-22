@@ -18,21 +18,24 @@ type CreateUserRequest struct {
 	FieldTitle string `json:"fieldTitle" binding:"required"`
 	AccType    string `json:"accType"  binding:"required"`
 	Password   string `json:"password"  binding:"required,min=6,alphanum"`
+	Country    string `json:"country" binding:"required"`
 }
 
 type GetUserRes struct {
-	Name       string         `json:"name"`
-	Email      string         `json:"email"`
-	Field      string         `json:"field"`
-	FieldTitle string         `json:"fieldTitle"`
-	Bio        sql.NullString `json:"bio"`
-	INLink     sql.NullString `json:"ln_link"`
-	AvatarUrl  sql.NullString `json:"avatar_url"`
-	AvatarID   sql.NullString `json:"avatar_id"`
-	WbLink     sql.NullString `json:"wb_link"`
-	GbLink     sql.NullString `json:"gb_link"`
-	Active     bool           `json:"active"`
-	CreatedAt  time.Time      `json:"created_at"`
+	Name        string         `json:"name"`
+	Email       string         `json:"email"`
+	Field       string         `json:"field"`
+	FieldTitle  string         `json:"fieldTitle"`
+	Bio         sql.NullString `json:"bio"`
+	INLink      sql.NullString `json:"ln_link"`
+	AvatarUrl   sql.NullString `json:"avatar_url"`
+	AvatarID    sql.NullString `json:"avatar_id"`
+	WbLink      sql.NullString `json:"wb_link"`
+	GbLink      sql.NullString `json:"gb_link"`
+	Active      bool           `json:"active"`
+	Country     string         `json:"country"`
+	Connections int32          `json:"connections"`
+	CreatedAt   time.Time      `json:"created_at"`
 }
 
 type GetUserRequest struct {
@@ -46,7 +49,7 @@ type GetUsersRequest struct {
 
 type GetUserResponse struct {
 	Msg string `json:"msg"`
-	Id  string `json:"id"`
+	Res bool   `json:"res"`
 }
 
 type LoginUserRequest struct {
@@ -90,4 +93,27 @@ type SetActivityReq struct {
 
 type ValidateAccountReq struct {
 	Token string `uri:"token" biniding:"required"`
+}
+
+type SendConnectionRequestReq struct {
+	UserTo string `json:"userTo" binding:"required"`
+}
+
+type GetConnectionRequestReq struct {
+	PageID   int32 `form:"pageId" binding:"required"`
+	PageSize int32 `form:"pageSize" binding:"required"`
+}
+
+type AddConnectionReq struct {
+	UserId    string `json:"userId" binding:"required"`
+	RequestID string `json:"requestId" binding:"required"`
+}
+
+type GetUserConns struct {
+	PageID   int32 `form:"pageId" binding:"required,min=1"`
+	PageSize int32 `form:"pageSize" binidng:"required,min=1"`
+}
+
+type UnConnect struct {
+	Id string `uri:"id" binding:"required"`
 }

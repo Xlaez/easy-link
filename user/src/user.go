@@ -39,18 +39,20 @@ func (s *Server) GetUser(ctx *gin.Context) {
 	}
 
 	u := GetUserRes{
-		Name:       user.Name,
-		Email:      user.Email,
-		Field:      user.Field,
-		FieldTitle: user.FieldTitle,
-		Bio:        user.Bio,
-		INLink:     user.InLink,
-		AvatarUrl:  user.AvatarUrl,
-		AvatarID:   user.AvatarID,
-		WbLink:     user.WbLink,
-		GbLink:     user.GbLink,
-		Active:     user.Active,
-		CreatedAt:  user.CreatedAt,
+		Name:        user.Name,
+		Email:       user.Email,
+		Field:       user.Field,
+		FieldTitle:  user.FieldTitle,
+		Bio:         user.Bio,
+		INLink:      user.InLink,
+		AvatarUrl:   user.AvatarUrl,
+		AvatarID:    user.AvatarID,
+		WbLink:      user.WbLink,
+		GbLink:      user.GbLink,
+		Active:      user.Active,
+		Country:     user.Country,
+		Connections: user.Connections,
+		CreatedAt:   user.CreatedAt,
 	}
 
 	ctx.JSON(http.StatusOK, u)
@@ -249,4 +251,221 @@ func (s *Server) ChangeActiveStatus(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
+}
+
+func (s *Server) SendReq(ctx *gin.Context) {
+	var req SendConnectionRequestReq
+
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	arg := db.SendReqParams{
+		UserFrom: authPayload.ID,
+		UserTo:   uuid.MustParse(req.UserTo),
+	}
+
+	if err := s.store.SendReq(ctx, arg); err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorRes(err))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	// send notofication
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "sent"})
+}
+
+func (s *Server) GetUserRequests(ctx *gin.Context) {
+	var req GetConnectionRequestReq
+
+	if err := ctx.BindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	requests, err := s.store.GetAllUserReq(ctx, db.GetAllUserReqParams{
+		UserTo: authPayload.ID,
+		Limit:  req.PageSize,
+		Offset: (req.PageID - 1) * req.PageSize,
+	})
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errors.New("not found"))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, requests)
+}
+
+type GetAUserReq struct {
+	ID string `uri:"id" binding:"required"`
+}
+
+func (s *Server) GetAUserReq(ctx *gin.Context) {
+	var req GetAUserReq
+
+	if err := ctx.BindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	uid := uuid.MustParse(req.ID)
+
+	request, err := s.store.GetReq(ctx, uid)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errors.New("not found"))
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, request)
+}
+
+func (s *Server) RejectConnectionRequest(ctx *gin.Context) {
+	var req GetAUserReq
+
+	if err := ctx.BindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	uid := uuid.MustParse(req.ID)
+
+	if err := s.store.DeleteReq(ctx, uid); err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorRes(errors.New("not found")))
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "deleted"})
+}
+
+func (s *Server) AcceptConnection(ctx *gin.Context) {
+	var req AddConnectionReq
+
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	_, err := s.store.ConnectionTx(ctx, db.ConnectionTxParams{
+		UserTo:    authPayload.ID,
+		UserFrom:  req.UserId,
+		RequestID: req.RequestID,
+	})
+
+	if err != nil {
+		ctx.JSON(http.StatusConflict, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "successful"})
+}
+
+func (s *Server) GetUserConnections(ctx *gin.Context) {
+	var req GetUserConns
+
+	if err := ctx.BindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	conns, err := s.store.GetAllUserConnections(ctx, db.GetAllUserConnectionsParams{
+		User1:  authPayload.ID,
+		Limit:  req.PageSize,
+		Offset: (req.PageID - 1) * req.PageSize,
+	})
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errors.New("not found"))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, conns)
+}
+
+func (s *Server) GetSentRequests(ctx *gin.Context) {
+	var req GetUserConns
+
+	if err := ctx.BindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	r, err := s.store.GetAllSentReq(ctx, db.GetAllSentReqParams{
+		UserFrom: authPayload.ID,
+		Limit:    req.PageID,
+		Offset:   (req.PageSize - 1) * req.PageID,
+	})
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errors.New("not found"))
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, r)
+}
+
+func (s *Server) UnConnectUser(ctx *gin.Context) {
+	var req UnConnect
+
+	if err := ctx.BindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	if err := s.store.DeleteConnection(ctx, uuid.MustParse(req.Id)); err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusInternalServerError, errors.New("not found"))
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	if err := s.store.UpdateConnectionTotal(ctx, db.UpdateConnectionTotalParams{
+		ID:          authPayload.ID,
+		Connections: -1,
+	}); err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "connection removed"})
 }

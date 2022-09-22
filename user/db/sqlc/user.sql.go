@@ -13,6 +13,23 @@ import (
 	"github.com/google/uuid"
 )
 
+const addConnection = `-- name: AddConnection :exec
+insert into "connection" (
+    user_1,
+    user_2
+) values ($1, $2)
+`
+
+type AddConnectionParams struct {
+	User1 uuid.UUID `json:"user1"`
+	User2 uuid.UUID `json:"user2"`
+}
+
+func (q *Queries) AddConnection(ctx context.Context, arg AddConnectionParams) error {
+	_, err := q.db.ExecContext(ctx, addConnection, arg.User1, arg.User2)
+	return err
+}
+
 const createUser = `-- name: CreateUser :one
 insert into "user" (
     name,
@@ -20,11 +37,12 @@ insert into "user" (
     field,
     field_title,
     acc_type,
-    password
+    password,
+    country
 )
 values (
-    $1, $2, $3, $4, $5, $6
-) returning id, name, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, created_at, updated_at
+    $1, $2, $3, $4, $5, $6, $7
+) returning id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
 `
 
 type CreateUserParams struct {
@@ -34,6 +52,7 @@ type CreateUserParams struct {
 	FieldTitle string `json:"fieldTitle"`
 	AccType    string `json:"accType"`
 	Password   string `json:"password"`
+	Country    string `json:"country"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
@@ -44,11 +63,14 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		arg.FieldTitle,
 		arg.AccType,
 		arg.Password,
+		arg.Country,
 	)
 	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.Country,
+		&i.Dob,
 		&i.Email,
 		&i.Field,
 		&i.FieldTitle,
@@ -63,10 +85,31 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.GbLink,
 		&i.Active,
 		&i.Valid,
+		&i.Connections,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const deleteConnection = `-- name: DeleteConnection :exec
+delete from "connection"
+ where id = $1
+`
+
+func (q *Queries) DeleteConnection(ctx context.Context, id uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, deleteConnection, id)
+	return err
+}
+
+const deleteReq = `-- name: DeleteReq :exec
+delete from "request"
+ where id = $1
+`
+
+func (q *Queries) DeleteReq(ctx context.Context, id uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, deleteReq, id)
+	return err
 }
 
 const deleteUser = `-- name: DeleteUser :exec
@@ -79,8 +122,135 @@ func (q *Queries) DeleteUser(ctx context.Context, id uuid.UUID) error {
 	return err
 }
 
+const getAllSentReq = `-- name: GetAllSentReq :many
+select id, user_from, user_to, created_at
+  from "request"
+ where user_from = $1
+ limit $2
+ offset $3
+`
+
+type GetAllSentReqParams struct {
+	UserFrom uuid.UUID `json:"userFrom"`
+	Limit    int32     `json:"limit"`
+	Offset   int32     `json:"offset"`
+}
+
+func (q *Queries) GetAllSentReq(ctx context.Context, arg GetAllSentReqParams) ([]Request, error) {
+	rows, err := q.db.QueryContext(ctx, getAllSentReq, arg.UserFrom, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Request{}
+	for rows.Next() {
+		var i Request
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserFrom,
+			&i.UserTo,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllUserConnections = `-- name: GetAllUserConnections :many
+select id, user_1, user_2, blocked, created_at from "connection"
+where user_1 = $1
+or user_2 = $1
+limit $2
+offset $3
+`
+
+type GetAllUserConnectionsParams struct {
+	User1  uuid.UUID `json:"user1"`
+	Limit  int32     `json:"limit"`
+	Offset int32     `json:"offset"`
+}
+
+func (q *Queries) GetAllUserConnections(ctx context.Context, arg GetAllUserConnectionsParams) ([]Connection, error) {
+	rows, err := q.db.QueryContext(ctx, getAllUserConnections, arg.User1, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Connection{}
+	for rows.Next() {
+		var i Connection
+		if err := rows.Scan(
+			&i.ID,
+			&i.User1,
+			&i.User2,
+			&i.Blocked,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllUserReq = `-- name: GetAllUserReq :many
+select id, user_from, user_to, created_at
+  from "request"
+ where user_to = $1
+ limit $2
+ offset $3
+`
+
+type GetAllUserReqParams struct {
+	UserTo uuid.UUID `json:"userTo"`
+	Limit  int32     `json:"limit"`
+	Offset int32     `json:"offset"`
+}
+
+func (q *Queries) GetAllUserReq(ctx context.Context, arg GetAllUserReqParams) ([]Request, error) {
+	rows, err := q.db.QueryContext(ctx, getAllUserReq, arg.UserTo, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Request{}
+	for rows.Next() {
+		var i Request
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserFrom,
+			&i.UserTo,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getAllUsers = `-- name: GetAllUsers :many
-select id, name, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, created_at, updated_at
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
   from "user"
   order by  id
   limit $1
@@ -104,6 +274,8 @@ func (q *Queries) GetAllUsers(ctx context.Context, arg GetAllUsersParams) ([]Use
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
+			&i.Country,
+			&i.Dob,
 			&i.Email,
 			&i.Field,
 			&i.FieldTitle,
@@ -118,6 +290,7 @@ func (q *Queries) GetAllUsers(ctx context.Context, arg GetAllUsersParams) ([]Use
 			&i.GbLink,
 			&i.Active,
 			&i.Valid,
+			&i.Connections,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {
@@ -134,8 +307,46 @@ func (q *Queries) GetAllUsers(ctx context.Context, arg GetAllUsersParams) ([]Use
 	return items, nil
 }
 
+const getConnection = `-- name: GetConnection :one
+select id, user_1, user_2, blocked, created_at from "connection"
+where id = $1
+limit 1
+`
+
+func (q *Queries) GetConnection(ctx context.Context, id uuid.UUID) (Connection, error) {
+	row := q.db.QueryRowContext(ctx, getConnection, id)
+	var i Connection
+	err := row.Scan(
+		&i.ID,
+		&i.User1,
+		&i.User2,
+		&i.Blocked,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getReq = `-- name: GetReq :one
+select id, user_from, user_to, created_at
+  from "request"
+ where id = $1
+ limit 1
+`
+
+func (q *Queries) GetReq(ctx context.Context, id uuid.UUID) (Request, error) {
+	row := q.db.QueryRowContext(ctx, getReq, id)
+	var i Request
+	err := row.Scan(
+		&i.ID,
+		&i.UserFrom,
+		&i.UserTo,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getUser = `-- name: GetUser :one
-select id, name, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, created_at, updated_at
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
   from "user"
  where id = $1
  limit 1
@@ -147,6 +358,8 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.Country,
+		&i.Dob,
 		&i.Email,
 		&i.Field,
 		&i.FieldTitle,
@@ -161,6 +374,7 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.GbLink,
 		&i.Active,
 		&i.Valid,
+		&i.Connections,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -168,7 +382,7 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 }
 
 const isEmailTaken = `-- name: IsEmailTaken :one
-select id, name, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, created_at, updated_at
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
   from "user"
  where email = $1
 `
@@ -179,6 +393,8 @@ func (q *Queries) IsEmailTaken(ctx context.Context, email string) (User, error) 
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.Country,
+		&i.Dob,
 		&i.Email,
 		&i.Field,
 		&i.FieldTitle,
@@ -193,10 +409,30 @@ func (q *Queries) IsEmailTaken(ctx context.Context, email string) (User, error) 
 		&i.GbLink,
 		&i.Active,
 		&i.Valid,
+		&i.Connections,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const sendReq = `-- name: SendReq :exec
+insert into "request" (
+    user_from,
+    user_to
+) values (
+    $1, $2
+)
+`
+
+type SendReqParams struct {
+	UserFrom uuid.UUID `json:"userFrom"`
+	UserTo   uuid.UUID `json:"userTo"`
+}
+
+func (q *Queries) SendReq(ctx context.Context, arg SendReqParams) error {
+	_, err := q.db.ExecContext(ctx, sendReq, arg.UserFrom, arg.UserTo)
+	return err
 }
 
 const setActivity = `-- name: SetActivity :exec
@@ -255,6 +491,22 @@ type UpdateBioParams struct {
 
 func (q *Queries) UpdateBio(ctx context.Context, arg UpdateBioParams) error {
 	_, err := q.db.ExecContext(ctx, updateBio, arg.ID, arg.Bio, arg.UpdatedAt)
+	return err
+}
+
+const updateConnectionTotal = `-- name: UpdateConnectionTotal :exec
+update "user"
+   set connections= connections + $2
+ where id = $1
+`
+
+type UpdateConnectionTotalParams struct {
+	ID          uuid.UUID `json:"id"`
+	Connections int32     `json:"connections"`
+}
+
+func (q *Queries) UpdateConnectionTotal(ctx context.Context, arg UpdateConnectionTotalParams) error {
+	_, err := q.db.ExecContext(ctx, updateConnectionTotal, arg.ID, arg.Connections)
 	return err
 }
 
@@ -324,9 +576,9 @@ func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) 
 }
 
 const validate = `-- name: Validate :exec
- update "user"
+update "user"
     set valid=$2
-  where id = $1
+ where id = $1
 `
 
 type ValidateParams struct {

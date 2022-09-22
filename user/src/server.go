@@ -10,13 +10,13 @@ import (
 )
 
 type Server struct {
-	store      *db.Queries
+	store      *db.Store
 	tokenMaker auth.Maker
 	config     utils.Config
 	router     *gin.Engine
 }
 
-func NewServer(store *db.Queries, config utils.Config) (*Server, error) {
+func NewServer(store *db.Store, config utils.Config) (*Server, error) {
 	tokenMaker, err := auth.NewPasteoMaker(config.TokenSymmetricKey)
 
 	if err != nil {

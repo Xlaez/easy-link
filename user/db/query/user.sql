@@ -5,11 +5,17 @@ insert into "user" (
     field,
     field_title,
     acc_type,
-    password
+    password,
+    country
 )
 values (
-    $1, $2, $3, $4, $5, $6
+    $1, $2, $3, $4, $5, $6, $7
 ) returning *;
+
+-- name: UpdateConnectionTotal :exec
+update "user"
+   set connections= connections + $2
+ where id = $1;
 
 -- name: GetUser :one
 select *
@@ -72,6 +78,67 @@ update "user"
  where id = $1;
 
  -- name: Validate :exec
- update "user"
+update "user"
     set valid=$2
-  where id = $1;
+ where id = $1;
+
+-- name: SendReq :exec
+insert into "request" (
+    user_from,
+    user_to
+) values (
+    $1, $2
+);
+
+-- name: GetReq :one
+select *
+  from "request"
+ where id = $1
+ limit 1;
+
+-- name: GetAllUserReq :many
+select *
+  from "request"
+ where user_to = $1
+ limit $2
+ offset $3;
+
+-- name: GetAllSentReq :many
+select *
+  from "request"
+ where user_from = $1
+ limit $2
+ offset $3;
+
+-- name: DeleteReq :exec
+delete from "request"
+ where id = $1;
+
+-- name: AddConnection :exec
+insert into "connection" (
+    user_1,
+    user_2
+) values ($1, $2);
+
+-- name: DeleteConnection :exec
+delete from "connection"
+ where id = $1;
+
+-- name: GetConnection :one
+select * from "connection"
+where id = $1
+limit 1;
+
+-- name: GetAllUserConnections :many
+select * from "connection"
+where user_1 = $1
+or user_2 = $1
+limit $2
+offset $3;
+
+--GetAllUserConnections
+-- select 'name'
+--   from "user"
+--   join "connection"
+--   on connection.user_1 = $1
+--   where id = $2;

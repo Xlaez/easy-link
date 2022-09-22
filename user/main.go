@@ -27,7 +27,7 @@ func connectDB(config utils.Config) {
 		log.Fatal("Error: cannot open sql databse", err)
 	}
 
-	store := db.New(conn)
+	store := db.NewStore(conn)
 
 	server, err := src.NewServer(store, config)
 

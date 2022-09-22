@@ -9,14 +9,12 @@ import (
 )
 
 func parseTemplate(templateFileName string, data interface{}) (string, error) {
-	templatePath, err := filepath.Abs(fmt.Sprintf("github.com/Xlaez/easy-link/templates/%s", templateFileName))
-
+	templatePath, err := filepath.Abs(fmt.Sprintf("/home/uty/KAMOU/easy-link/user/templates/%s", templateFileName))
 	if err != nil {
 		return "", errors.New("cannot locate template")
 	}
 
 	t, err := template.ParseFiles(templatePath)
-
 	if err != nil {
 		return "", err
 	}

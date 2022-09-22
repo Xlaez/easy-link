@@ -11,23 +11,41 @@ import (
 	"github.com/google/uuid"
 )
 
+type Connection struct {
+	ID        uuid.UUID `json:"id"`
+	User1     uuid.UUID `json:"user1"`
+	User2     uuid.UUID `json:"user2"`
+	Blocked   bool      `json:"blocked"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type Request struct {
+	ID        uuid.UUID `json:"id"`
+	UserFrom  uuid.UUID `json:"userFrom"`
+	UserTo    uuid.UUID `json:"userTo"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
 type User struct {
-	ID         uuid.UUID      `json:"id"`
-	Name       string         `json:"name"`
-	Email      string         `json:"email"`
-	Field      string         `json:"field"`
-	FieldTitle string         `json:"fieldTitle"`
-	Bio        sql.NullString `json:"bio"`
-	Password   string         `json:"password"`
-	AccType    string         `json:"accType"`
-	AvatarUrl  sql.NullString `json:"avatarUrl"`
-	AvatarID   sql.NullString `json:"avatarID"`
-	InLink     sql.NullString `json:"inLink"`
-	TwLink     sql.NullString `json:"twLink"`
-	WbLink     sql.NullString `json:"wbLink"`
-	GbLink     sql.NullString `json:"gbLink"`
-	Active     bool           `json:"active"`
-	Valid      bool           `json:"valid"`
-	CreatedAt  time.Time      `json:"createdAt"`
-	UpdatedAt  time.Time      `json:"updatedAt"`
+	ID          uuid.UUID      `json:"id"`
+	Name        string         `json:"name"`
+	Country     string         `json:"country"`
+	Dob         sql.NullTime   `json:"dob"`
+	Email       string         `json:"email"`
+	Field       string         `json:"field"`
+	FieldTitle  string         `json:"fieldTitle"`
+	Bio         sql.NullString `json:"bio"`
+	Password    string         `json:"password"`
+	AccType     string         `json:"accType"`
+	AvatarUrl   sql.NullString `json:"avatarUrl"`
+	AvatarID    sql.NullString `json:"avatarID"`
+	InLink      sql.NullString `json:"inLink"`
+	TwLink      sql.NullString `json:"twLink"`
+	WbLink      sql.NullString `json:"wbLink"`
+	GbLink      sql.NullString `json:"gbLink"`
+	Active      bool           `json:"active"`
+	Valid       bool           `json:"valid"`
+	Connections int32          `json:"connections"`
+	CreatedAt   time.Time      `json:"createdAt"`
+	UpdatedAt   time.Time      `json:"updatedAt"`
 }

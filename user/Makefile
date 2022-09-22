@@ -15,6 +15,6 @@ sqlc:
 serve:
 	go run main.go
 opendb:
-	docker exec -it postgres13-old psql -U root -d bank
+	docker exec -it postgres13-old psql -U root -d connect
 .PHONY: 
 	postgres createdb dropdb migrateup migratedown sqlc test serve cleandb

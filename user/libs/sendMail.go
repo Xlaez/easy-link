@@ -98,10 +98,10 @@ func SendMailWitSmtp(to []string, data interface{}, template string, subject str
 	if err != nil {
 		return false, err
 	}
-	eHost := "smtp/gmail"
+	eHost := "smtp.gmail.com"
 	eFrom := c.AppMail
 	ePassword := c.AppPassword
-	ePort := 5000
+	ePort := "587"
 
 	EAuth = smtp.PlainAuth("", eFrom, ePassword, eHost)
 
@@ -111,7 +111,7 @@ func SendMailWitSmtp(to []string, data interface{}, template string, subject str
 		return false, errors.New("cannot parse template")
 	}
 
-	mime := "MIME-version: 1.0;\nContent-Type: text/plain; charset=\"UTF-8\";\n\n"
+	mime := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
 	msg := []byte(subject + mime + "\n" + eBody)
 	add := fmt.Sprintf("%s:%s", eHost, ePort)
 
@@ -119,4 +119,19 @@ func SendMailWitSmtp(to []string, data interface{}, template string, subject str
 		return false, err
 	}
 	return true, nil
+}
+
+type EmailRequest struct {
+	from    string
+	to      []string
+	subject string
+	body    string
+}
+
+func NewEmailRequest(to []string, subject, body string) *EmailRequest {
+	return &EmailRequest{
+		to:      to,
+		subject: subject,
+		body:    body,
+	}
 }

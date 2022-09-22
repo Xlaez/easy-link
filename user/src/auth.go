@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -52,6 +53,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		FieldTitle: request.FieldTitle,
 		Password:   hashedPassword,
 		AccType:    request.AccType,
+		Country:    request.Country,
 	}
 
 	u, err := s.store.CreateUser(context.Background(), arg)
@@ -69,9 +71,28 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 
 	// Send Email to verify account
 
+	type templateData struct {
+		Name string
+		Link string
+	}
+
+	link := fmt.Sprintf("localhost:8585/api/v1/auth/validate/%s", token)
+
+	templatedata := templateData{
+		Name: u.Name,
+		Link: link,
+	}
+
+	ok, err := libs.SendMailWitSmtp([]string{u.Email}, templatedata, "signup.html", "Validate Account")
+
+	if err != nil {
+		ctx.JSON(http.StatusConflict, errorRes(err))
+		return
+	}
+
 	result := GetUserResponse{
 		Msg: "Created",
-		Id:  token,
+		Res: ok,
 	}
 
 	ctx.JSON(http.StatusCreated, result)
@@ -152,7 +173,7 @@ func (s *Server) ForgetPassword(ctx *gin.Context) {
 		return
 	}
 
-	_, err := s.store.IsEmailTaken(ctx, req.Email)
+	u, err := s.store.IsEmailTaken(ctx, req.Email)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -171,8 +192,24 @@ func (s *Server) ForgetPassword(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"digits": randomInt})
 	// send email
+	type RestePasswordMail struct {
+		Name   string
+		Digits string
+	}
+
+	resetPasswordMail := RestePasswordMail{
+		Name:   u.Name,
+		Digits: randomInt,
+	}
+
+	_, err = libs.SendMailWitSmtp([]string{u.Email}, resetPasswordMail, "updatePassword.html", "Update Password")
+
+	if err != nil {
+		ctx.JSON(http.StatusConflict, errorRes(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"digits": randomInt})
 }
 
 func (s *Server) UpdatePassword(ctx *gin.Context) {
@@ -256,6 +293,23 @@ func (s *Server) UpdateEmailReq(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	type RestePasswordMail struct {
+		Name   string
+		Digits string
+	}
+
+	resetPasswordMail := RestePasswordMail{
+		Name:   user.Name,
+		Digits: randomInt,
+	}
+
+	_, err = libs.SendMailWitSmtp([]string{user.Email}, resetPasswordMail, "updateEmail.html", "Update EMail")
+
+	if err != nil {
+		ctx.JSON(http.StatusConflict, errorRes(err))
 		return
 	}
 
