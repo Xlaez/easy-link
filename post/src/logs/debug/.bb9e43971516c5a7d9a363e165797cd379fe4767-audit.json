@@ -14,6 +14,11 @@
             "date": 1664110069844,
             "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-09-25.log",
             "hash": "cd5001a0681111f6526a2288bd60a242b868fb45f200b456ce6abfc758ab51ba"
+        },
+        {
+            "date": 1664147061415,
+            "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-09-26.log",
+            "hash": "74539ff183aa3bb108cafa4c6903f9ee6d8bc4b717458dc0934de974d1145453"
         }
     ],
     "hashType": "sha256"

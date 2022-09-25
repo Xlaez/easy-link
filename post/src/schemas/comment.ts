@@ -9,35 +9,38 @@ export interface IComment extends Document {
   repliesCount: number;
 }
 
-const schema = new Schema({
-  postId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'Post',
-  },
-  parentId: {
-    type: Schema.Types.ObjectId,
-    required: false,
-    ref: 'Comment',
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  authorId: {
-    type: String,
-    required: true,
-  },
-  replies: [
-    {
+const schema = new Schema(
+  {
+    postId: {
       type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'Post',
+    },
+    parentId: {
+      type: Schema.Types.ObjectId,
+      required: false,
       ref: 'Comment',
     },
-  ],
-  repliesCount: {
-    type: Number,
-    default: 0,
+    content: {
+      type: String,
+      required: true,
+    },
+    authorId: {
+      type: String,
+      required: true,
+    },
+    replies: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
+    repliesCount: {
+      type: Number,
+      default: 0,
+    },
   },
-});
+  { timestamps: true, toJSON: { virtuals: true } },
+);
 
 export default model<IComment>('Comment', schema);
