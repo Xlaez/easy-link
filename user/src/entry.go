@@ -19,6 +19,7 @@ func (s *Server) Router() {
 	authRoutes.POST("/forget-password", s.ForgetPassword)
 	authRoutes.POST("/update-password", s.UpdatePassword)
 	authRoutes.POST("/validate/:token", s.ValidateUser)
+	// authRoutes.GET("/send", )
 
 	router.GET("/api/v1/user/all", s.GetUsers)
 

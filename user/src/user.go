@@ -8,8 +8,10 @@ import (
 	"net/http"
 	"time"
 
+	dbn "github.com/Xlaez/easy-link/db"
 	db "github.com/Xlaez/easy-link/db/sqlc"
 	"github.com/Xlaez/easy-link/libs"
+	"github.com/Xlaez/easy-link/messaging"
 	"github.com/Xlaez/easy-link/token/auth"
 	"github.com/Xlaez/easy-link/utils"
 	"github.com/gin-gonic/gin"
@@ -53,6 +55,21 @@ func (s *Server) GetUser(ctx *gin.Context) {
 		Country:     user.Country,
 		Connections: user.Connections,
 		CreatedAt:   user.CreatedAt,
+	}
+
+	n := dbn.Notification{
+		Content: "content",
+		UserID:  "fff",
+		Link:    "kkkk",
+		Brand:   "kkkkk",
+	}
+
+	// err = s.repo.SendNotification(n)type
+	err = messaging.SendNotification(n, s.ch)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, errorRes(err))
+		return
 	}
 
 	ctx.JSON(http.StatusOK, u)

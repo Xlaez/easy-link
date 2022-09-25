@@ -5,9 +5,17 @@ import (
 	"log"
 
 	db "github.com/Xlaez/easy-link/db/sqlc"
+	// "github.com/Xlaez/easy-link/messaging"
 	"github.com/Xlaez/easy-link/src"
 	"github.com/Xlaez/easy-link/utils"
 	_ "github.com/lib/pq"
+	"github.com/streadway/amqp"
+)
+
+var (
+	conn *amqp.Connection
+	ch   *amqp.Channel
+	// repo messaging.Repo
 )
 
 func main() {
@@ -16,7 +24,9 @@ func main() {
 	if err != nil {
 		log.Fatal("Error: cannot load env", err)
 	}
+	connectMsgQueue(config)
 	connectDB(config)
+	// initLayers(config)
 }
 
 func connectDB(config utils.Config) {
@@ -29,7 +39,7 @@ func connectDB(config utils.Config) {
 
 	store := db.NewStore(conn)
 
-	server, err := src.NewServer(store, config)
+	server, err := src.NewServer(store, config, ch)
 
 	if err != nil {
 		log.Fatal("Error: cannot initialize server ", err)
@@ -39,3 +49,23 @@ func connectDB(config utils.Config) {
 		log.Fatal("Error: cannot connect server", err)
 	}
 }
+
+func connectMsgQueue(config utils.Config) {
+	var err error
+
+	conn, err = amqp.Dial(config.AmpUrl)
+
+	if err != nil {
+		log.Fatal("Failed to connect to RabbitMq cluster: ", err)
+	}
+
+	ch, err = conn.Channel()
+	if err != nil {
+		log.Fatal("Failed to create RabbitMQ channel", err)
+	}
+}
+
+// func initLayers(config utils.Config) {
+
+// 	repo = messaging.NewRepository(ch)
+// }

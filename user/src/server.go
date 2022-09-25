@@ -4,6 +4,9 @@ import (
 	"fmt"
 
 	db "github.com/Xlaez/easy-link/db/sqlc"
+	"github.com/streadway/amqp"
+
+	// "github.com/Xlaez/easy-link/messaging"
 	"github.com/Xlaez/easy-link/token/auth"
 	"github.com/Xlaez/easy-link/utils"
 	"github.com/gin-gonic/gin"
@@ -14,9 +17,11 @@ type Server struct {
 	tokenMaker auth.Maker
 	config     utils.Config
 	router     *gin.Engine
+	// repo       messaging.Repo
+	ch *amqp.Channel
 }
 
-func NewServer(store *db.Store, config utils.Config) (*Server, error) {
+func NewServer(store *db.Store, config utils.Config, ch *amqp.Channel) (*Server, error) {
 	tokenMaker, err := auth.NewPasteoMaker(config.TokenSymmetricKey)
 
 	if err != nil {
@@ -27,6 +32,8 @@ func NewServer(store *db.Store, config utils.Config) (*Server, error) {
 		store:      store,
 		tokenMaker: tokenMaker,
 		config:     config,
+		// repo:       repo,
+		ch: ch,
 	}
 
 	server.Router()

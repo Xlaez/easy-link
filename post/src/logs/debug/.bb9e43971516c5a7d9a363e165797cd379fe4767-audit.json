@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/uty/KAMOU/easy-link/post/src/logs/debug/.bb9e43971516c5a7d9a363e165797cd379fe4767-audit.json",
+    "files": [
+        {
+            "date": 1664012670142,
+            "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-09-24.log",
+            "hash": "d17aedf8fe17c215928e2451483bfbf602951a2d6bfb3f7d0608a762286f8030"
+        },
+        {
+            "date": 1664110069844,
+            "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-09-25.log",
+            "hash": "cd5001a0681111f6526a2288bd60a242b868fb45f200b456ce6abfc758ab51ba"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,13 +1,22 @@
 # default structrue, just a set-up!
-version: "3"
+version: "3.1.0"
 services:
-  redis:
-    image: redis
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "6379"
+  # address: redis://localhost
+  # volumes:
+  # - redis-db: /var/opt/redislabs
+  rabbitMq:
+    environment:
+      AMQP_URL: "amqp://rabbitmq?connection_attempts=58retry_delay=5"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "password"
+    image: "rabbitmq:3-management-alpine"
     ports:
-      - "6379"
-    # address: redis://localhost
-    # volumes:
-    # - redis-db: /var/opt/redislabs
+      - 5672:5672
+      - 15672:15672
 # volumes:
 # redis-db:
 # driver: local

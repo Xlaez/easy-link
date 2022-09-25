@@ -19,6 +19,7 @@ type Config struct {
 	OauthClientSecret   string        `mapstructure:"OAUTH_CLIENT_SECRET"`
 	AppMail             string        `mapstructure:"APP_MAIL"`
 	AppPassword         string        `mapstructure:"APP_PASS"`
+	AmpUrl              string        `mapstructure:"AMP_URL"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

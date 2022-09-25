@@ -16,5 +16,9 @@ serve:
 	go run main.go
 opendb:
 	docker exec -it postgres13-old psql -U root -d connect
+stopd:
+	docker stop postgres13-old
+removed:
+	docker rm postgres13-old
 .PHONY: 
-	postgres createdb dropdb migrateup migratedown sqlc test serve cleandb
+	postgres createdb dropdb migrateup migratedown sqlc test serve cleandb stopd removed
