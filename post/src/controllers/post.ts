@@ -93,6 +93,53 @@ class PostController {
       next(e);
     }
   };
+
+  public addReaction = async (req: Request, res: Response, next: NextFunction) => {
+    const { reaction, reactor, postId } = req.body;
+
+    const enumA = ['clap', 'wow', 'love'];
+
+    if (!enumA.includes(reaction)) {
+      return res.status(400).json({ status: 'fail', data: 'invalid reaction type' });
+    }
+
+    try {
+      const r = await postService.addReaction(postId, reaction, reactor);
+
+      if (!r) return res.status(500).json({ status: 'fail', data: 'could not add reaction' });
+
+      res.status(200).json({ status: 'success', data: 'reaction added' });
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public removeReaction = async (req: Request, res: Response, next: NextFunction) => {
+    const { reactor, postId } = req.body;
+    try {
+      const r = await postService.removeReaction(postId, reactor);
+
+      if (!r) return res.status(500).json({ status: 'fail', data: 'could not add reaction' });
+
+      res.status(200).json({ status: 'success', data: 'reaction removed' });
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public sharePost = async (req: Request, res: Response, next: NextFunction) => {
+    const { postId, content, userId } = req.body;
+
+    try {
+      const r = await postService.sharePost(postId, userId, content);
+
+      if (!r) return res.status(500).json({ status: 'fail', data: 'unable to share' });
+
+      res.status(200).json({ status: 'success', data: 'post shared' });
+    } catch (e) {
+      next(e);
+    }
+  };
 }
 
 export default PostController;

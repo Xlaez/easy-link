@@ -34,7 +34,7 @@ class PostService {
 
   public getPost = async (postId: any): Promise<any> => {
     try {
-      const post = await PostModel.findById(postId).populate('files', 'url');
+      const post = await PostModel.findById(postId).populate('files', 'url').populate('sharedPostId');
       if (!post) return null;
       return post;
     } catch (e) {
@@ -59,7 +59,13 @@ class PostService {
     }
 
     try {
-      const posts = await PostModel.find(queryObj).populate('files', 'url').sort(sort).skip(numToSkip).limit(pageSize).lean();
+      const posts = await PostModel.find(queryObj)
+        .populate('files', 'url')
+        .populate('sharedPostId')
+        .sort(sort)
+        .skip(numToSkip)
+        .limit(pageSize)
+        .lean();
 
       const count = await PostModel.find({ userId }).countDocuments();
 
@@ -88,7 +94,13 @@ class PostService {
     }
 
     try {
-      const posts = await PostModel.find(queryObj).populate('files', 'url').sort(sort).skip(numToSkip).limit(pageSize).lean();
+      const posts = await PostModel.find(queryObj)
+        .populate('files', 'url')
+        .populate('sharedPostId')
+        .sort(sort)
+        .skip(numToSkip)
+        .limit(pageSize)
+        .lean();
 
       const count = await PostModel.find().countDocuments();
 
@@ -113,6 +125,44 @@ class PostService {
     try {
       await PostModel.deleteOne({ _id });
       return true;
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+
+  public addReaction = async (_id: any, reaction: string, reactor: string): Promise<any> => {
+    try {
+      const r = await PostModel.findByIdAndUpdate(_id, { $push: { reaction: { reactor, reaction } }, $inc: { reactionCount: 1 } });
+      return r;
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+
+  public removeReaction = async (id: any, reactor: string): Promise<any> => {
+    try {
+      const r = await PostModel.findByIdAndUpdate(id, { $pull: { reaction: { reactor } }, $inc: { reactionCount: -1 } });
+      return r;
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+
+  /**
+   * on frontend the content is null would be set to
+   * 'username shared a post'
+   */
+
+  public sharePost = async (postId: any, userId: string, content: string): Promise<any> => {
+    try {
+      const p = PostModel.create({
+        sharedPostId: postId,
+        userId,
+        content,
+      });
+
+      await PostModel.findByIdAndUpdate(postId, { $push: { sharer: userId }, $inc: { shareCount: 1 } });
+      return p;
     } catch (e) {
       throw new Error(e);
     }

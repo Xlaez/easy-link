@@ -55,6 +55,18 @@ class CommentController {
       next(e);
     }
   };
+
+  public deleteComment = async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+
+    try {
+      const r = await commentService.deleteComment(commentId.toString());
+
+      res.status(200).json({ status: 'success', data: 'resource deleted', error: !r });
+    } catch (e) {
+      next(e);
+    }
+  };
 }
 
 export default CommentController;

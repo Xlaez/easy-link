@@ -19,6 +19,9 @@ class PostRouter implements Routes {
     this.router.get(`${this.path}/all`, this.postController.getAllPosts);
     this.router.patch(`${this.path}/one`, this.postController.updatePost);
     this.router.delete(`${this.path}/:postId`, this.postController.deletePost);
+    this.router.put(`${this.path}/add-reaction`, this.postController.addReaction);
+    this.router.purge(`${this.path}/remove-reaction`, this.postController.removeReaction);
+    this.router.post(`${this.path}/share`, this.postController.sharePost);
   }
 }
 

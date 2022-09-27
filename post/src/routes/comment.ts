@@ -16,6 +16,7 @@ class CommentRouter implements Routes {
     this.router.get(`${this.path}`, this.commentcontroller.getCommentsPerPost);
     this.router.get(`${this.path}/one`, this.commentcontroller.getComment);
     this.router.patch(`${this.path}`, this.commentcontroller.updateComment);
+    this.router.delete(`${this.path}/:commentId`, this.commentcontroller.deleteComment);
   }
 }
 

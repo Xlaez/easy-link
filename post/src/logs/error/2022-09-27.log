@@ -1,0 +1,40 @@
+2022-09-27 06:20:14 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/post.ts[0m:[93m132[0m:[93m1[0m - [91merror[0m[90m TS1005: [0m'=>' expected.
+
+[7m132[0m }
+[7m   [0m [91m~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/post.ts[0m:[93m132[0m:[93m1[0m - [91merror[0m[90m TS1005: [0m'=>' expected.
+
+[7m132[0m }
+[7m   [0m [91m~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/post/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/post/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/post/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/post/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/post/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/post/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-09-27 07:14:33 error: uncaughtException: Post validation failed: userId: Path `userId` is required., content: Path `content` is required.
+ValidationError: Post validation failed: userId: Path `userId` is required., content: Path `content` is required.
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/document.js:3054:32)
+    at /home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/document.js:2842:17
+    at /home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/schematype.js:1349:9
+    at processTicksAndRejections (node:internal/process/task_queues:78:11)
+2022-09-27 07:16:47 error: uncaughtException: Post validation failed: userId: Path `userId` is required., content: Path `content` is required.
+ValidationError: Post validation failed: userId: Path `userId` is required., content: Path `content` is required.
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/document.js:3054:32)
+    at /home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/document.js:2842:17
+    at /home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/schematype.js:1349:9
+    at processTicksAndRejections (node:internal/process/task_queues:78:11)
+2022-09-27 07:17:36 error: uncaughtException: Post validation failed: userId: Path `userId` is required., content: Path `content` is required.
+ValidationError: Post validation failed: userId: Path `userId` is required., content: Path `content` is required.
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/document.js:3054:32)
+    at /home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/document.js:2842:17
+    at /home/uty/KAMOU/easy-link/post/node_modules/mongoose/lib/schematype.js:1349:9
+    at processTicksAndRejections (node:internal/process/task_queues:78:11)
