@@ -2,3 +2,7 @@ user/go.sum
 post/node_modules
 notification/go.sum
 post/yarn-error.log
+messenger/node_modules
+messenger/.vscode
+messenger/yarn-error.lock
+user/.vscode

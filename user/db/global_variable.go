@@ -6,3 +6,10 @@ type Notification struct {
 	Link    string
 	Brand   string
 }
+
+type GetUser struct {
+	Name       string
+	Country    string
+	AvaratUrl  string
+	FieldTitle string
+}

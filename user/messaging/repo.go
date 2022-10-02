@@ -7,14 +7,6 @@ import (
 	"github.com/streadway/amqp"
 )
 
-// type Repo interface {
-// 	SendNotification(db.Notification) error
-// }
-
-// type repository struct {
-// 	ch *amqp.Channel
-// }
-
 const (
 	GetQueue    = "publisher.get"
 	CreateQueue = "publisher.create"
@@ -22,22 +14,27 @@ const (
 	DeleteQueue = "publisher.delete"
 )
 
-// func NewRepository(ch *amqp.Channel) Repo {
-
-// 	return &repository{
-// 		ch: ch,
-// 	}
-// }
-
-// type Notification struct {
-// 	Content string
-// 	UserID  string
-// 	Link    string
-// 	Brand   string
-// }
-
 func SendNotification(request db.Notification, ch *amqp.Channel) error {
 	q := createQueues(CreateQueue, ch)
+
+	body, err := json.Marshal(request)
+
+	if err != nil {
+		return err
+	}
+
+	msg := amqp.Publishing{
+		ContentType: "application/json",
+		Body:        body,
+	}
+
+	publishMessage(ch, q.Name, msg)
+
+	return nil
+}
+
+func GetUser(request db.GetUser, ch *amqp.Channel) error {
+	q := createQueues("get-user", ch)
 
 	body, err := json.Marshal(request)
 

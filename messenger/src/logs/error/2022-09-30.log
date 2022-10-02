@@ -1,0 +1,22 @@
+2022-09-30 18:00:28 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/routes/message.ts[0m:[93m18[0m:[93m43[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m18[0m     this.router.patch(`${this.path}/seen` this.msgController.setMsgAsSeen);
+[7m  [0m [91m                                          ~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/routes/message.ts[0m:[93m18[0m:[93m43[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m18[0m     this.router.patch(`${this.path}/seen` this.msgController.setMsgAsSeen);
+[7m  [0m [91m                                          ~~~~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)

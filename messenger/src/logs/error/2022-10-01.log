@@ -1,0 +1,283 @@
+2022-10-01 00:37:59 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:38:40 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:44:34 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:45:23 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:46:13 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:48:56 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:50:00 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:51:16 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:53:36 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 00:54:58 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 01:00:36 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 01:03:41 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 01:04:09 error: uncaughtException: listen EADDRINUSE: address already in use :::8881
+Error: listen EADDRINUSE: address already in use :::8881
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/uty/KAMOU/easy-link/messenger/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/uty/KAMOU/easy-link/messenger/src/app.ts:31:14)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/messenger/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+2022-10-01 06:53:03 error: [PUT] /chat-room/members >> StatusCode:: 400, Message:: Unexpected token b in JSON at position 18
+2022-10-01 07:15:33 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m116[0m:[93m1[0m - [91merror[0m[90m TS1005: [0m'=>' expected.
+
+[7m116[0m }
+[7m   [0m [91m~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m116[0m:[93m1[0m - [91merror[0m[90m TS1005: [0m'=>' expected.
+
+[7m116[0m }
+[7m   [0m [91m~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-01 07:21:46 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m115[0m:[93m78[0m - [91merror[0m[90m TS1005: [0m'=>' expected.
+
+[7m115[0m   public removeMembers = async(req:Request, res:Response, next: NextFunction){}
+[7m   [0m [91m                                                                             ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m115[0m:[93m78[0m - [91merror[0m[90m TS1005: [0m'=>' expected.
+
+[7m115[0m   public removeMembers = async(req:Request, res:Response, next: NextFunction){}
+[7m   [0m [91m                                                                             ~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-01 19:06:05 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m206[0m:[93m5[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m206[0m     }catch(e){
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m206[0m:[93m5[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m206[0m     }catch(e){
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-01 19:07:06 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m206[0m:[93m5[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m206[0m     }catch(e){
+[7m   [0m [91m    ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/chatRoom.ts[0m:[93m206[0m:[93m5[0m - [91merror[0m[90m TS1003: [0mIdentifier expected.
+
+[7m206[0m     }catch(e){
+[7m   [0m [91m    ~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-01 20:01:37 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/message.ts[0m:[93m96[0m:[93m5[0m - [91merror[0m[90m TS1435: [0mUnknown keyword or identifier. Did you mean 'return'?
+
+[7m96[0m     retun true;
+[7m  [0m [91m    ~~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/message.ts[0m:[93m96[0m:[93m5[0m - [91merror[0m[90m TS1435: [0mUnknown keyword or identifier. Did you mean 'return'?
+
+[7m96[0m     retun true;
+[7m  [0m [91m    ~~~~~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-01 21:34:07 error: uncaughtException: Identifier 'conv' has already been declared
+/home/uty/KAMOU/easy-link/messenger/src/services/message.ts:40
+            const conv = await privateConv_1.default.findById(conv).lean();
+                  ^^^^
+
+SyntaxError: Identifier 'conv' has already been declared
+    at Object.compileFunction (node:vm:360:18)
+    at wrapSafe (node:internal/modules/cjs/loader:1055:15)
+    at Module._compile (node:internal/modules/cjs/loader:1090:27)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/messenger/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+    at require (node:internal/modules/cjs/helpers:102:18)

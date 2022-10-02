@@ -39,10 +39,6 @@ type User struct {
 	AccType     string         `json:"accType"`
 	AvatarUrl   sql.NullString `json:"avatarUrl"`
 	AvatarID    sql.NullString `json:"avatarID"`
-	InLink      sql.NullString `json:"inLink"`
-	TwLink      sql.NullString `json:"twLink"`
-	WbLink      sql.NullString `json:"wbLink"`
-	GbLink      sql.NullString `json:"gbLink"`
 	Active      bool           `json:"active"`
 	Valid       bool           `json:"valid"`
 	Connections int32          `json:"connections"`

@@ -8,8 +8,10 @@ import (
 	"net/http"
 	"time"
 
+	dbn "github.com/Xlaez/easy-link/db"
 	db "github.com/Xlaez/easy-link/db/sqlc"
 	"github.com/Xlaez/easy-link/libs"
+	"github.com/Xlaez/easy-link/messaging"
 	"github.com/Xlaez/easy-link/token/auth"
 	"github.com/Xlaez/easy-link/utils"
 	"github.com/gin-gonic/gin"
@@ -62,7 +64,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
 		return
 	}
-	token, err := createToken(s, arg.Email, u.ID, s.config)
+	token, err := createToken(s, arg.Name, arg.Email, u.ID, s.config)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
@@ -121,6 +123,15 @@ func (s *Server) ValidateUser(ctx *gin.Context) {
 		return
 	}
 
+	n := dbn.Notification{
+		Content: "your account has been verified",
+		UserID:  user.ID.String(),
+		Link:    "https://",
+		Brand:   "account",
+	}
+
+	_ = messaging.SendNotification(n, s.ch)
+
 	ctx.JSON(http.StatusOK, gin.H{"msg": "accepted"})
 }
 
@@ -154,7 +165,7 @@ func (s *Server) logInUser(ctx *gin.Context) {
 		return
 	}
 
-	token, err := createToken(s, user.Email, user.ID, s.config)
+	token, err := createToken(s, user.Name, user.Email, user.ID, s.config)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
@@ -313,6 +324,15 @@ func (s *Server) UpdateEmailReq(ctx *gin.Context) {
 		return
 	}
 
+	n := dbn.Notification{
+		Content: "email update request",
+		UserID:  user.ID.String(),
+		Link:    "https://",
+		Brand:   "account",
+	}
+
+	_ = messaging.SendNotification(n, s.ch)
+
 	ctx.JSON(http.StatusOK, gin.H{"digits": randomInt})
 }
 
@@ -350,8 +370,9 @@ func (s *Server) ChangeEmail(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }
 
-func createToken(s *Server, email string, id uuid.UUID, config utils.Config) (string, error) {
+func createToken(s *Server, name string, email string, id uuid.UUID, config utils.Config) (string, error) {
 	accToken, err := s.tokenMaker.CreateToken(
+		name,
 		email,
 		id,
 		s.config.AccessTokenDuration,

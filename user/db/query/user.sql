@@ -53,15 +53,6 @@ update "user"
    updated_at=$4
  where id = $1;
 
--- name: UpdateOther :exec
-update "user"
-   set in_link=$2,
-   tw_link=$3,
-   wb_link=$4,
-   gb_link=$5,
-   updated_at=$6
- where id = $1;
-
  -- name: DeleteUser :exec
  delete from "user"
   where id = $1;

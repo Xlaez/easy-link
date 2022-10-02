@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/uty/KAMOU/easy-link/messenger/src/logs/error/.117fae14d9ea66e873a02fda54e8b8bea8376d5e-audit.json",
+    "files": [
+        {
+            "date": 1664555563721,
+            "name": "/home/uty/KAMOU/easy-link/messenger/src/logs/error/2022-09-30.log",
+            "hash": "9a460c6a8e85997a508d8c6edd054d26f047a58dde3ae79736c1778cae9d1dd8"
+        },
+        {
+            "date": 1664578943048,
+            "name": "/home/uty/KAMOU/easy-link/messenger/src/logs/error/2022-10-01.log",
+            "hash": "88cc1d2ddec5e5124c1a66802e0241fe0837a70db4ef23bac536a309bd2c3a70"
+        }
+    ],
+    "hashType": "sha256"
+}

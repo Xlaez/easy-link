@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"os"
 
@@ -10,12 +9,14 @@ import (
 	"github.com/Xlaez/easy-link/notification/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/streadway/amqp"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var (
-	conn *amqp.Connection
-	ctx  context.Context
-	ch   *amqp.Channel
+	conn       *amqp.Connection
+	ch         *amqp.Channel
+	controller src.Repository
+	collection *mongo.Collection
 )
 
 func loadConfig() (utils.Config, error) {
@@ -36,17 +37,22 @@ func main() {
 	}
 
 	router := gin.New()
+	configMsgQueue(config)
 	initializeLayers()
 
 	router.Use(gin.Logger())
 
-	// orgRoutes := router.Group("/kiama-org/api/v1/org")
-	// memberRoutes := router.Group("/kiama-org/api/v1/member")
+	router.POST("/send", controller.SendNotification())
+	router.GET("/get", controller.GetAllUserNotification())
+	router.GET("/get/:id", controller.GetNotificationById())
+	router.DELETE("/delete/:id", controller.DeleteNotification())
+	router.PATCH("/seen/:id", controller.SetNotificationAsSeen())
+
 	err = router.Run(":" + port)
+
 	if err != nil {
 		log.Fatal("Cannot start server, exiting......", err)
 	}
-	configMsgQueue(config)
 }
 
 func configMsgQueue(config utils.Config) {
@@ -66,6 +72,6 @@ func configMsgQueue(config utils.Config) {
 }
 
 func initializeLayers() {
-	collection := db.CollectionData(db.Client, "notification")
-	src.InitRepo(collection, ctx, ch)
+	collection = db.CollectionData(db.Client, "notification")
+	controller = src.InitRepo(collection, ch)
 }

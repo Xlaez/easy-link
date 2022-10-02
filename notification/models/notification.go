@@ -12,5 +12,6 @@ type Notification struct {
 	UserID    string             `bson:"userId" binding:"required"`
 	Link      string             `bson:"link"`
 	Brand     string             `bson:"brand" binding:"required"`
+	Seen      bool               `bson:"seen"`
 	CreatedAT time.Time          `bson:"createdAt"`
 }

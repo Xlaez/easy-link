@@ -42,7 +42,7 @@ insert into "user" (
 )
 values (
     $1, $2, $3, $4, $5, $6, $7
-) returning id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
+) returning id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at
 `
 
 type CreateUserParams struct {
@@ -79,10 +79,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.AccType,
 		&i.AvatarUrl,
 		&i.AvatarID,
-		&i.InLink,
-		&i.TwLink,
-		&i.WbLink,
-		&i.GbLink,
 		&i.Active,
 		&i.Valid,
 		&i.Connections,
@@ -250,7 +246,7 @@ func (q *Queries) GetAllUserReq(ctx context.Context, arg GetAllUserReqParams) ([
 }
 
 const getAllUsers = `-- name: GetAllUsers :many
-select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at
   from "user"
   order by  id
   limit $1
@@ -284,10 +280,6 @@ func (q *Queries) GetAllUsers(ctx context.Context, arg GetAllUsersParams) ([]Use
 			&i.AccType,
 			&i.AvatarUrl,
 			&i.AvatarID,
-			&i.InLink,
-			&i.TwLink,
-			&i.WbLink,
-			&i.GbLink,
 			&i.Active,
 			&i.Valid,
 			&i.Connections,
@@ -346,7 +338,7 @@ func (q *Queries) GetReq(ctx context.Context, id uuid.UUID) (Request, error) {
 }
 
 const getUser = `-- name: GetUser :one
-select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at
   from "user"
  where id = $1
  limit 1
@@ -368,10 +360,6 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.AccType,
 		&i.AvatarUrl,
 		&i.AvatarID,
-		&i.InLink,
-		&i.TwLink,
-		&i.WbLink,
-		&i.GbLink,
 		&i.Active,
 		&i.Valid,
 		&i.Connections,
@@ -382,7 +370,7 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 }
 
 const isEmailTaken = `-- name: IsEmailTaken :one
-select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, in_link, tw_link, wb_link, gb_link, active, valid, connections, created_at, updated_at
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at
   from "user"
  where email = $1
 `
@@ -403,10 +391,6 @@ func (q *Queries) IsEmailTaken(ctx context.Context, email string) (User, error) 
 		&i.AccType,
 		&i.AvatarUrl,
 		&i.AvatarID,
-		&i.InLink,
-		&i.TwLink,
-		&i.WbLink,
-		&i.GbLink,
 		&i.Active,
 		&i.Valid,
 		&i.Connections,
@@ -525,37 +509,6 @@ type UpdateEmailParams struct {
 
 func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) error {
 	_, err := q.db.ExecContext(ctx, updateEmail, arg.ID, arg.Email, arg.UpdatedAt)
-	return err
-}
-
-const updateOther = `-- name: UpdateOther :exec
-update "user"
-   set in_link=$2,
-   tw_link=$3,
-   wb_link=$4,
-   gb_link=$5,
-   updated_at=$6
- where id = $1
-`
-
-type UpdateOtherParams struct {
-	ID        uuid.UUID      `json:"id"`
-	InLink    sql.NullString `json:"inLink"`
-	TwLink    sql.NullString `json:"twLink"`
-	WbLink    sql.NullString `json:"wbLink"`
-	GbLink    sql.NullString `json:"gbLink"`
-	UpdatedAt time.Time      `json:"updatedAt"`
-}
-
-func (q *Queries) UpdateOther(ctx context.Context, arg UpdateOtherParams) error {
-	_, err := q.db.ExecContext(ctx, updateOther,
-		arg.ID,
-		arg.InLink,
-		arg.TwLink,
-		arg.WbLink,
-		arg.GbLink,
-		arg.UpdatedAt,
-	)
 	return err
 }
 

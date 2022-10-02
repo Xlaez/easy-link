@@ -49,6 +49,6 @@ func DBSetup() *mongo.Client {
 var Client *mongo.Client = DBSetup()
 
 func CollectionData(client *mongo.Client, collectionName string) *mongo.Collection {
-	notificationCol = client.Database("Connect").Collection(collectionName)
+	notificationCol = client.Database("connect").Collection(collectionName)
 	return notificationCol
 }

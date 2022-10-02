@@ -46,26 +46,13 @@ func (s *Server) GetUser(ctx *gin.Context) {
 		Field:       user.Field,
 		FieldTitle:  user.FieldTitle,
 		Bio:         user.Bio,
-		INLink:      user.InLink,
 		AvatarUrl:   user.AvatarUrl,
 		AvatarID:    user.AvatarID,
-		WbLink:      user.WbLink,
-		GbLink:      user.GbLink,
 		Active:      user.Active,
 		Country:     user.Country,
 		Connections: user.Connections,
 		CreatedAt:   user.CreatedAt,
 	}
-
-	n := dbn.Notification{
-		Content: "content",
-		UserID:  "fff",
-		Link:    "kkkk",
-		Brand:   "kkkkk",
-	}
-
-	// err = s.repo.SendNotification(n)type
-	err = messaging.SendNotification(n, s.ch)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadGateway, errorRes(err))
@@ -174,50 +161,6 @@ func (s *Server) UploadAvatar(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }
 
-func (s *Server) UpdateOther(ctx *gin.Context) {
-	var req UpdateOtherReq
-
-	if err := ctx.BindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorRes(err))
-		return
-	}
-
-	uid := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
-
-	id := uid.ID
-
-	lk := sql.NullString{
-		String: req.InLink,
-		Valid:  true,
-	}
-	wl := sql.NullString{
-		String: req.WbLink,
-		Valid:  true,
-	}
-	gl := sql.NullString{
-		String: req.GbLink,
-		Valid:  true,
-	}
-	tl := sql.NullString{
-		String: req.GbLink,
-		Valid:  true,
-	}
-
-	if err := s.store.UpdateOther(ctx, db.UpdateOtherParams{
-		ID:        id,
-		InLink:    lk,
-		TwLink:    tl,
-		WbLink:    wl,
-		GbLink:    gl,
-		UpdatedAt: time.Now(),
-	}); err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorRes(err))
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
-}
-
 func (s *Server) DeleteAccount(ctx *gin.Context) {
 	var req DeleteAccountReq
 
@@ -293,9 +236,15 @@ func (s *Server) SendReq(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
 		return
 	}
+	content := fmt.Sprintf("connection request from %s", authPayload.Name)
+	n := dbn.Notification{
+		Content: content,
+		UserID:  req.UserTo,
+		Link:    "http://localhost:8585/user/profile",
+		Brand:   "user",
+	}
 
-	// send notofication
-
+	_ = messaging.SendNotification(n, s.ch)
 	ctx.JSON(http.StatusOK, gin.H{"msg": "sent"})
 }
 
@@ -395,6 +344,15 @@ func (s *Server) AcceptConnection(ctx *gin.Context) {
 		ctx.JSON(http.StatusConflict, errorRes(err))
 		return
 	}
+
+	n := dbn.Notification{
+		Content: fmt.Sprintf("%s has accepted your connection invite", authPayload.Name),
+		UserID:  req.UserId,
+		Link:    "",
+		Brand:   "invite",
+	}
+
+	_ = messaging.SendNotification(n, s.ch)
 
 	ctx.JSON(http.StatusOK, gin.H{"msg": "successful"})
 }

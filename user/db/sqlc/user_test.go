@@ -66,8 +66,6 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, user1.CreatedAt, user.CreatedAt)
 	require.Equal(t, user1.Password, user.Password)
 	require.Equal(t, user1.FieldTitle, user.FieldTitle)
-	require.Empty(t, user.GbLink)
-	require.Empty(t, user.WbLink)
 }
 
 func TestUpdatedPassword(t *testing.T) {
@@ -127,21 +125,6 @@ func TestUpdateBio(t *testing.T) {
 	err := testQueries.UpdateBio(context.Background(), UpdateBioParams{
 		ID:        user1.ID,
 		Bio:       Bio,
-		UpdatedAt: time.Now(),
-	})
-
-	require.NoError(t, err)
-}
-
-func TestUpdateOther(t *testing.T) {
-	user1 := createRandomUser(t)
-
-	err := testQueries.UpdateOther(context.Background(), UpdateOtherParams{
-		ID:        user1.ID,
-		InLink:    utils.RandomNullStr(10),
-		TwLink:    utils.RandomNullStr(10),
-		WbLink:    utils.RandomNullStr(30),
-		GbLink:    utils.RandomNullStr(19),
 		UpdatedAt: time.Now(),
 	})
 
