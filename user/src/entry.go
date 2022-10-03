@@ -3,16 +3,21 @@ package src
 import "github.com/gin-gonic/gin"
 
 const (
-	authPath = "/api/v1/auth"
-	userPath = "/api/v1/user"
-	postPath = "/api/v1/post"
+	authPath  = "/api/v1/auth"
+	userPath  = "/api/v1/user"
+	postPath  = "/api/v1/post"
+	oauthPath = "/api/v1/auth/google"
 )
 
 func (s *Server) Router() {
 	router := gin.Default()
 
 	authRoutes := router.Group(authPath)
+	oauthRoutes := router.Group(oauthPath)
 	userRoutes := router.Group(userPath).Use(authMiddleware(s.tokenMaker))
+
+	oauthRoutes.POST("/login", s.oauthGoogleLogin)
+	oauthRoutes.POST("/callback", s.googleOauthcallback)
 
 	authRoutes.POST("/signup", s.CreateUser)              // create new user
 	authRoutes.POST("/signin", s.logInUser)               // signin to app
