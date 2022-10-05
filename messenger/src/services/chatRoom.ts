@@ -211,7 +211,7 @@ class ChatRoomService {
   };
 
   public deleteMessage = async (messageId: string) => {
-    const result = await this.roomMsg.updateOne({ _id: messageId }, { isDeleted: true });
+    const result = await this.roomMsg.findByIdAndUpdate(messageId, { isDeleted: true });
     return result;
   };
 

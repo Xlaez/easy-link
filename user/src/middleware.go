@@ -53,3 +53,8 @@ func authMiddleware(tokenMaker auth.Maker) gin.HandlerFunc {
 		ctx.Next()
 	}
 }
+
+func headersMiddleware(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+	ctx.Next()
+}

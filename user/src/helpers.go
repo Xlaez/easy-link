@@ -12,13 +12,16 @@ func errorRes(err error) gin.H {
 }
 
 type CreateUserRequest struct {
-	Name       string `json:"name" binding:"required"`
-	Email      string `json:"email" binding:"required,email"`
+	Name     string `json:"name" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	AccType  string `json:"accType"  binding:"required"`
+	Password string `json:"password"  binding:"required,min=6,alphanum"`
+	Country  string `json:"country" binding:"required"`
+}
+
+type UpdateUserField struct {
 	Field      string `json:"field" binding:"required"`
 	FieldTitle string `json:"fieldTitle" binding:"required"`
-	AccType    string `json:"accType"  binding:"required"`
-	Password   string `json:"password"  binding:"required,min=6,alphanum"`
-	Country    string `json:"country" binding:"required"`
 }
 
 type GetUserRes struct {
@@ -27,11 +30,8 @@ type GetUserRes struct {
 	Field       string         `json:"field"`
 	FieldTitle  string         `json:"fieldTitle"`
 	Bio         sql.NullString `json:"bio"`
-	INLink      sql.NullString `json:"ln_link"`
 	AvatarUrl   sql.NullString `json:"avatar_url"`
 	AvatarID    sql.NullString `json:"avatar_id"`
-	WbLink      sql.NullString `json:"wb_link"`
-	GbLink      sql.NullString `json:"gb_link"`
 	Active      bool           `json:"active"`
 	Country     string         `json:"country"`
 	Connections int32          `json:"connections"`
@@ -80,13 +80,6 @@ type DigitsReq struct {
 	Password string `json:"password" binding:"required,min=7"`
 }
 
-type UpdateOtherReq struct {
-	InLink string `json:"inLink"`
-	TwLink string `json:"twLink"`
-	WbLink string `json:"wbLink"`
-	GbLink string `json:"gbLink"`
-}
-
 type SetActivityReq struct {
 	Active bool `form:"active"`
 }
@@ -116,4 +109,8 @@ type GetUserConns struct {
 
 type UnConnect struct {
 	Id string `uri:"id" binding:"required"`
+}
+
+type UserConnectionsForPost struct {
+	Id string `uri:"id"`
 }

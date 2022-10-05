@@ -33,6 +33,7 @@ class MsgRouter implements Routes2 {
     this.router.patch(`${this.path2}/read-msg`, this.chatController.markMsgRead);
     this.router.patch(`${this.path2}/update/:roomId`, multerSetup.singleUpload, this.chatController.updateRoomDetails);
     this.router.purge(`${this.path2}/leave/:roomId/:userId`, this.chatController.leaveRoom);
+    this.router.delete(`${this.path2}/delete/:msgId`, this.chatController.deleteMsg);
   }
 }
 

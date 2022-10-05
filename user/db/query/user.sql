@@ -2,14 +2,12 @@
 insert into "user" (
     name,
     email,
-    field,
-    field_title,
     acc_type,
     password,
     country
 )
 values (
-    $1, $2, $3, $4, $5, $6, $7
+    $1, $2, $3, $4, $5
 ) returning *;
 
 -- name: UpdateConnectionTotal :exec
@@ -52,6 +50,12 @@ update "user"
    avatar_id=$3,
    updated_at=$4
  where id = $1;
+
+-- name: UpdateField :exec
+update "user"
+    set field = $2,
+    field_title =$3
+where id = $1;
 
  -- name: DeleteUser :exec
  delete from "user"
@@ -127,9 +131,7 @@ or user_2 = $1
 limit $2
 offset $3;
 
---GetAllUserConnections
--- select 'name'
---   from "user"
---   join "connection"
---   on connection.user_1 = $1
---   where id = $2;
+-- name: GetAllUserConnectionsForPosts :many
+select * from "connection"
+where user_1 = $1
+or user_2 = $1;

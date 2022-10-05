@@ -6,3 +6,5 @@ messenger/node_modules
 messenger/.vscode
 messenger/yarn-error.lock
 user/.vscode
+messenger/src/logs
+post/src/logs

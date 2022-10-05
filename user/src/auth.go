@@ -20,6 +20,28 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type EmailCheck struct {
+	Email string `uri:"email" binding:"required"`
+}
+
+func (s *Server) CheckEmail(ctx *gin.Context) {
+	var request EmailCheck
+
+	if err := ctx.BindUri(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	_, err := s.store.IsEmailTaken(context.Background(), request.Email)
+
+	if err != sql.ErrNoRows {
+		var er error = errors.New("email taken")
+		ctx.JSON(http.StatusBadRequest, errorRes(er))
+		return
+	}
+	ctx.JSON(http.StatusAccepted, gin.H{"msg": "all fine"})
+}
+
 func (s *Server) CreateUser(ctx *gin.Context) {
 	var request CreateUserRequest
 
@@ -49,13 +71,11 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 	}
 
 	arg := db.CreateUserParams{
-		Name:       request.Name,
-		Email:      request.Email,
-		Field:      request.Field,
-		FieldTitle: request.FieldTitle,
-		Password:   hashedPassword,
-		AccType:    request.AccType,
-		Country:    request.Country,
+		Name:     request.Name,
+		Email:    request.Email,
+		Password: hashedPassword,
+		AccType:  request.AccType,
+		Country:  request.Country,
 	}
 
 	u, err := s.store.CreateUser(context.Background(), arg)
@@ -96,7 +116,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		Msg: "Created",
 		Res: ok,
 	}
-
+	ctx.Header("Access-Control-Allow-Origin", "*")
 	ctx.JSON(http.StatusCreated, result)
 }
 

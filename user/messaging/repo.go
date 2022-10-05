@@ -52,6 +52,25 @@ func GetUser(request db.GetUser, ch *amqp.Channel) error {
 	return nil
 }
 
+func GetAllUserConnections(request []db.GetAllUserConnections, ch *amqp.Channel) error {
+	q := createQueues("get-connections", ch)
+
+	body, err := json.Marshal(request)
+
+	if err != nil {
+		return err
+	}
+
+	msg := amqp.Publishing{
+		ContentType: "application/json",
+		Body:        body,
+	}
+
+	publishMessage(ch, q.Name, msg)
+
+	return nil
+}
+
 func createQueues(name string, ch *amqp.Channel) amqp.Queue {
 	return NewQueue(name, ch).CreateQueue()
 }

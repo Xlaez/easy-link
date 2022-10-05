@@ -12,13 +12,14 @@ const (
 func (s *Server) Router() {
 	router := gin.Default()
 
-	authRoutes := router.Group(authPath)
-	oauthRoutes := router.Group(oauthPath)
-	userRoutes := router.Group(userPath).Use(authMiddleware(s.tokenMaker))
+	authRoutes := router.Group(authPath).Use(headersMiddleware)
+	oauthRoutes := router.Group(oauthPath).Use(headersMiddleware)
+	userRoutes := router.Group(userPath).Use(authMiddleware(s.tokenMaker)).Use(headersMiddleware)
 
 	oauthRoutes.POST("/login", s.oauthGoogleLogin)
 	oauthRoutes.POST("/callback", s.googleOauthcallback)
 
+	authRoutes.POST("/check-email/:email", s.CheckEmail)
 	authRoutes.POST("/signup", s.CreateUser)              // create new user
 	authRoutes.POST("/signin", s.logInUser)               // signin to app
 	authRoutes.POST("/forget-password", s.ForgetPassword) // apply for a new password
@@ -34,6 +35,7 @@ func (s *Server) Router() {
 	userRoutes.PUT("/avatar", s.UploadAvatar)                    // upload an avatar
 	userRoutes.POST("/update-email", s.UpdateEmailReq)           // apply for email update
 	userRoutes.PATCH("/change-email", s.ChangeEmail)             // change email
+	userRoutes.PATCH("/update-field", s.UpdatedUserField)        // update field and field title
 	userRoutes.PATCH("/activity", s.ChangeActiveStatus)          // change active status
 	userRoutes.POST("/send-request", s.SendReq)                  // send connection request
 	userRoutes.GET("/connection-requests", s.GetUserRequests)    // get all users connection requests
@@ -43,6 +45,6 @@ func (s *Server) Router() {
 	userRoutes.GET("/connections", s.GetUserConnections)         // get all user's connections
 	userRoutes.GET("/sent-requests", s.GetSentRequests)          // get all sent request
 	userRoutes.DELETE("/un-connect/:id", s.UnConnectUser)        //unconnect a user
-
+	userRoutes.GET("/connections/:userId", s.GetAllUserConnectionsForPosts)
 	s.router = router
 }

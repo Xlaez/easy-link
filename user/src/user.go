@@ -43,8 +43,8 @@ func (s *Server) GetUser(ctx *gin.Context) {
 	u := GetUserRes{
 		Name:        user.Name,
 		Email:       user.Email,
-		Field:       user.Field,
-		FieldTitle:  user.FieldTitle,
+		Field:       user.Field.String,
+		FieldTitle:  user.FieldTitle.String,
 		Bio:         user.Bio,
 		AvatarUrl:   user.AvatarUrl,
 		AvatarID:    user.AvatarID,
@@ -56,6 +56,7 @@ func (s *Server) GetUser(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadGateway, errorRes(err))
+
 		return
 	}
 
@@ -83,6 +84,41 @@ func (s *Server) GetUsers(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, users)
+}
+
+func (s *Server) UpdatedUserField(ctx *gin.Context) {
+	var request UpdateUserField
+
+	if err := ctx.BindJSON(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	field := sql.NullString{
+		String: request.Field,
+		Valid:  true,
+	}
+
+	fieldTitle := sql.NullString{
+		String: request.FieldTitle,
+		Valid:  true,
+	}
+	if err := s.store.UpdateField(context.Background(), db.UpdateFieldParams{
+		ID:         authPayload.ID,
+		Field:      field,
+		FieldTitle: fieldTitle,
+	}); err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorRes(errors.New("user not found")))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }
 
 func (s *Server) UpdateUserBio(ctx *gin.Context) {
@@ -443,4 +479,43 @@ func (s *Server) UnConnectUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"msg": "connection removed"})
+}
+
+type GetAllUserCons struct {
+	UserID string `uri:"userId" binding:"required"`
+}
+
+func (s *Server) GetAllUserConnectionsForPosts(ctx *gin.Context) {
+	var req GetAllUserCons
+
+	if err := ctx.BindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	conn, err := s.store.GetAllUserConnectionsForPosts(context.Background(), uuid.MustParse(req.UserID))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorRes(errors.New("user has no conections")))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	var con []dbn.GetAllUserConnections
+
+	for _, v := range conn {
+		con = append(con, dbn.GetAllUserConnections{
+			User1: v.User1.String(),
+			User2: v.User2.String(),
+		})
+	}
+	if con == nil {
+		ctx.JSON(http.StatusNotFound, errorRes(errors.New("no resource")))
+		return
+	}
+
+	_ = messaging.GetAllUserConnections(con, s.ch)
+	ctx.JSON(http.StatusOK, gin.H{"msg": "success"})
 }

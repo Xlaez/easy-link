@@ -13,3 +13,8 @@ type GetUser struct {
 	AvaratUrl  string
 	FieldTitle string
 }
+
+type GetAllUserConnections struct {
+	User1 string
+	User2 string
+}

@@ -140,6 +140,11 @@ class PostController {
       next(e);
     }
   };
+
+  public getPostsForUserFeed = async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.query;
+    // get from amqp
+  };
 }
 
 export default PostController;

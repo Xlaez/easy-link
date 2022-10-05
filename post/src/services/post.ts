@@ -149,7 +149,7 @@ class PostService {
   };
 
   /**
-   * on frontend the content is null would be set to
+   * on frontend the content if null would be set to
    * 'username shared a post'
    */
 
@@ -163,6 +163,21 @@ class PostService {
 
       await PostModel.findByIdAndUpdate(postId, { $push: { sharer: userId }, $inc: { shareCount: 1 } });
       return p;
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+
+  /**
+   *
+   * @param userIds would be filtered on controller to exclude the user's id
+   * @returns an array of posts from all of the users
+   */
+  public getAllUserFriendsPosts = async (userIds: Array<string>): Promise<any> => {
+    try {
+      const postArr = await PostModel.aggregate();
+
+      return postArr;
     } catch (e) {
       throw new Error(e);
     }

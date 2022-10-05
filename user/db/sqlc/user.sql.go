@@ -34,33 +34,27 @@ const createUser = `-- name: CreateUser :one
 insert into "user" (
     name,
     email,
-    field,
-    field_title,
     acc_type,
     password,
     country
 )
 values (
-    $1, $2, $3, $4, $5, $6, $7
+    $1, $2, $3, $4, $5
 ) returning id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at
 `
 
 type CreateUserParams struct {
-	Name       string `json:"name"`
-	Email      string `json:"email"`
-	Field      string `json:"field"`
-	FieldTitle string `json:"fieldTitle"`
-	AccType    string `json:"accType"`
-	Password   string `json:"password"`
-	Country    string `json:"country"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	AccType  string `json:"accType"`
+	Password string `json:"password"`
+	Country  string `json:"country"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, createUser,
 		arg.Name,
 		arg.Email,
-		arg.Field,
-		arg.FieldTitle,
 		arg.AccType,
 		arg.Password,
 		arg.Country,
@@ -176,6 +170,41 @@ type GetAllUserConnectionsParams struct {
 
 func (q *Queries) GetAllUserConnections(ctx context.Context, arg GetAllUserConnectionsParams) ([]Connection, error) {
 	rows, err := q.db.QueryContext(ctx, getAllUserConnections, arg.User1, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Connection{}
+	for rows.Next() {
+		var i Connection
+		if err := rows.Scan(
+			&i.ID,
+			&i.User1,
+			&i.User2,
+			&i.Blocked,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllUserConnectionsForPosts = `-- name: GetAllUserConnectionsForPosts :many
+select id, user_1, user_2, blocked, created_at from "connection"
+where user_1 = $1
+or user_2 = $1
+`
+
+func (q *Queries) GetAllUserConnectionsForPosts(ctx context.Context, user1 uuid.UUID) ([]Connection, error) {
+	rows, err := q.db.QueryContext(ctx, getAllUserConnectionsForPosts, user1)
 	if err != nil {
 		return nil, err
 	}
@@ -509,6 +538,24 @@ type UpdateEmailParams struct {
 
 func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) error {
 	_, err := q.db.ExecContext(ctx, updateEmail, arg.ID, arg.Email, arg.UpdatedAt)
+	return err
+}
+
+const updateField = `-- name: UpdateField :exec
+update "user"
+    set field = $2,
+    field_title =$3
+where id = $1
+`
+
+type UpdateFieldParams struct {
+	ID         uuid.UUID      `json:"id"`
+	Field      sql.NullString `json:"field"`
+	FieldTitle sql.NullString `json:"fieldTitle"`
+}
+
+func (q *Queries) UpdateField(ctx context.Context, arg UpdateFieldParams) error {
+	_, err := q.db.ExecContext(ctx, updateField, arg.ID, arg.Field, arg.FieldTitle)
 	return err
 }
 

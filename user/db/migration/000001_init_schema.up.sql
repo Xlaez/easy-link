@@ -6,8 +6,8 @@ CREATE TABLE "user" (
   "country" varchar(50) NOT NULL,  -- eventually would be set to not null
   "dob" date,  -- eventually would be set to not null
   "email" varchar NOT NULL,
-  "field" varchar NOT NULL,
-  "field_title" varchar NOT NULL,
+  "field" varchar(255),
+  "field_title" varchar(255),
   "bio" varchar(500),
   "password" text NOT NULL,
   "acc_type" text NOT NULL,

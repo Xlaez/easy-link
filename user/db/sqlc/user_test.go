@@ -16,24 +16,11 @@ func createRandomUser(t *testing.T) User {
 
 	field := utils.RandomField()
 
-	var field_title string
-
-	switch field {
-	case "business":
-		field_title = "business analyst"
-	case "tech":
-		field_title = "web developer"
-	case "education":
-		field_title = "Administrative expert"
-	}
-
 	arg := CreateUserParams{
-		Name:       utils.RandomUser(),
-		Email:      utils.RandomEmail(),
-		Field:      field,
-		FieldTitle: field_title,
-		AccType:    "login",
-		Password:   hashedPassword,
+		Name:     utils.RandomUser(),
+		Email:    utils.RandomEmail(),
+		AccType:  "login",
+		Password: hashedPassword,
 	}
 
 	user, err := testQueries.CreateUser(context.Background(), arg)

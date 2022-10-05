@@ -136,7 +136,7 @@ class ChatRoomController {
       const recentRoom = await this.service.getRoomRecentConversation(allRooms, userId);
 
       const r = recentRoom.map((conversation: any) => {
-        const readBy = coversation.readByRecipients.flat();
+        const readBy = conversation.readByRecipients.flat();
 
         return {
           id: conversation._id,
@@ -209,6 +209,15 @@ class ChatRoomController {
   };
 
   // remember to delete message, check services that are not working and update aggregate
+  public deleteMsg = async (req: Request, res: Response, next: NextFunction) => {
+    const { msgId } = req.params;
+    try {
+      const r = await this.service.deleteMessage(msgId);
+      res.status(200).json({ status: 'success', data: r });
+    } catch (e) {
+      next(e);
+    }
+  };
 }
 
 export default ChatRoomController;

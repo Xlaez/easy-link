@@ -32,8 +32,8 @@ type User struct {
 	Country     string         `json:"country"`
 	Dob         sql.NullTime   `json:"dob"`
 	Email       string         `json:"email"`
-	Field       string         `json:"field"`
-	FieldTitle  string         `json:"fieldTitle"`
+	Field       sql.NullString `json:"field"`
+	FieldTitle  sql.NullString `json:"fieldTitle"`
 	Bio         sql.NullString `json:"bio"`
 	Password    string         `json:"password"`
 	AccType     string         `json:"accType"`
