@@ -1,4 +1,5 @@
 user/go.sum
+user/app.env
 post/node_modules
 notification/go.sum
 post/yarn-error.log
@@ -6,6 +7,7 @@ messenger/node_modules
 messenger/.vscode
 messenger/yarn-error.lock
 user/.vscode
+user/app.env
 messenger/src/logs
 post/src/logs
 organization/node_modules
@@ -13,7 +15,6 @@ organization/.vscode
 organization/yarn-error.log
 post/src/logs
 post/.env
-organisation/.env
+organization/.env
 messenger/.env
 notification/app.env
-user/app.env
