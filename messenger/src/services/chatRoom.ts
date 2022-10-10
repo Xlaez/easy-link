@@ -105,6 +105,13 @@ class ChatRoomService {
       members: { $in: [req.query.userId] },
     };
 
+    // query2 is  a primitve way for solving same issue with query1
+    const nameFilter = new RegExp(String(req.query.keyword), 'ig');
+    const query2 = {
+      name: nameFilter,
+      members: { $in: [req.query.userId] },
+    };
+
     const toJoinChatRooms = await this.room.find(query);
     const joinedChatRooms = await this.room.find(query1);
     const chatRoomIds = joinedChatRooms.map(joinedRoom => joinedRoom._id);
@@ -117,7 +124,7 @@ class ChatRoomService {
         : toJoinChatRooms.length
         ? { toJoinChatRooms }
         : { joinedRoomsInfo };
-    return result;
+    return { joinedRoomsInfo, joinedChatRooms, toJoinChatRooms };
   };
 
   public addMembers = async (members: any, roomId: string) => {
@@ -218,6 +225,16 @@ class ChatRoomService {
   public membersExistInRoom = async (roomId: string, members: any): Promise<any> => {
     const rooms = await this.room.findOne({ _id: roomId, members: { $in: members } });
     return rooms;
+  };
+
+  public activateSafeWords = async (roomId: string): Promise<any> => {
+    const room = await this.room.updateOne({ _id: roomId }, { noFoulWords: true }, { new: true });
+    return room;
+  };
+
+  public deactivateSafeWords = async (roomId: string): Promise<any> => {
+    const room = await this.room.updateOne({ _id: roomId }, { noFoulWords: false }, { new: true });
+    return room;
   };
 }
 

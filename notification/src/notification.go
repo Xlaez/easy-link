@@ -1,6 +1,7 @@
 package src
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -15,7 +16,7 @@ import (
 )
 
 type Repository interface {
-	SendNotification() gin.HandlerFunc
+	// SendNotification() gin.HandlerFunc
 	GetAllUserNotification() gin.HandlerFunc
 	GetNotificationById() gin.HandlerFunc
 	DeleteNotification() gin.HandlerFunc
@@ -34,63 +35,58 @@ func InitRepo(col *mongo.Collection, ch *amqp.Channel) Repository {
 	}
 }
 
-func (r *repository) SendNotification() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		q, err := r.ch.QueueDeclare(
-			"publisher.create",
-			false,
-			false,
-			false,
-			false,
-			nil,
-		)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "failed to declare queue"})
-			return
-		}
-
-		msgs, err := r.ch.Consume(
-			q.Name,
-			"",
-			true,
-			false,
-			false,
-			false,
-			nil,
-		)
-
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "failed to consume queue"})
-			return
-		}
-
-		// g := make(chan bool)
-
-		go func() {
-			for d := range msgs {
-				notificationId := primitive.NewObjectID()
-
-				var arg models.Notification
-
-				if err := json.Unmarshal(d.Body, &arg); err != nil {
-					ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "cannot unmarshal message"})
-					ctx.Abort()
-					return
-				}
-
-				arg.ID = notificationId
-				arg.CreatedAT = time.Now()
-				arg.Seen = false
-				_, err := r.collection.InsertOne(ctx, arg)
-
-				if err != nil {
-					ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "can not create notification"})
-					return
-				}
-			}
-		}()
-		// <-g
+func SendNotification(ch *amqp.Channel, collection *mongo.Collection) {
+	q, err := ch.QueueDeclare(
+		"publisher.create",
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return
 	}
+
+	msgs, err := ch.Consume(
+		q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	if err != nil {
+		return
+	}
+
+	g := make(chan bool)
+
+	go func() {
+		for d := range msgs {
+			notificationId := primitive.NewObjectID()
+
+			var arg models.Notification
+
+			if err := json.Unmarshal(d.Body, &arg); err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			arg.ID = notificationId
+			arg.CreatedAT = time.Now()
+			arg.Seen = false
+			_, err := collection.InsertOne(context.Background(), arg)
+
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
+	}()
+	<-g
 }
 
 type GetUserNotificationReq struct {

@@ -25,7 +25,7 @@ class MsgRouter implements Routes2 {
     this.router.purge(`${this.path}/unblock/:convId/:userId`, this.msgController.unblockConversation);
 
     this.router.post(`${this.path2}/create-room`, multerSetup.singleUpload, this.chatController.createNew);
-    this.router.post(`${this.path2}/send-msg`, multerSetup.singleUpload, this.chatController.createMsg);
+    this.router.post(`${this.path2}/send-msg`, multerSetup.multipleUpload, this.chatController.createMsg);
     this.router.get(`${this.path2}/search-rooms`, this.chatController.findRoomByName);
     this.router.put(`${this.path2}/members`, this.chatController.addMembers);
     this.router.purge(`${this.path2}/members`, this.chatController.removeMembers);
@@ -34,6 +34,8 @@ class MsgRouter implements Routes2 {
     this.router.patch(`${this.path2}/update/:roomId`, multerSetup.singleUpload, this.chatController.updateRoomDetails);
     this.router.purge(`${this.path2}/leave/:roomId/:userId`, this.chatController.leaveRoom);
     this.router.delete(`${this.path2}/delete/:msgId`, this.chatController.deleteMsg);
+    this.router.patch(`${this.path2}/safe-words/:roomId`, this.chatController.activateSafeWords);
+    this.router.patch(`${this.path2}/remove-safe-words/:roomId`, this.chatController.deactivateSafeWords);
   }
 }
 

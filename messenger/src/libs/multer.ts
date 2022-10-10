@@ -28,7 +28,7 @@ class MulterSetUp {
       // will be removed and left blank when production ready
     },
     filename: (request: Request, file: Express.Multer.File, callback: FileNameCallback): void => {
-      callback(null, `connect-msg-${Date.now().toString()}-${file.originalname}}`);
+      callback(null, `connect-msg-${Date.now().toString()}-${file.originalname}`);
     },
   });
 
@@ -44,6 +44,11 @@ class MulterSetUp {
     storage: this.fileStorage,
     fileFilter: this.fileFilter,
   }).single('upload');
+
+  public multipleUpload = multer({
+    storage: this.fileStorage,
+    fileFilter: this.fileFilter,
+  }).array('uploads');
 }
 
 export default MulterSetUp;

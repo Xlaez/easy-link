@@ -135,3 +135,15 @@ offset $3;
 select * from "connection"
 where user_1 = $1
 or user_2 = $1;
+
+-- name: GetAllUsersOfGivenLocation :many
+select * from "user"
+where country = $1
+limit $2
+offset $3;
+
+-- name: GetUserByField :many
+select * from "user"
+where field = $1
+limit $2
+offset $3;

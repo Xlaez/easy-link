@@ -84,7 +84,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
 		return
 	}
-	token, err := createToken(s, arg.Name, arg.Email, u.ID, s.config)
+	token, err := createToken(s, arg.Name, arg.Email, arg.Country, u.ID, s.config)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
@@ -185,7 +185,7 @@ func (s *Server) logInUser(ctx *gin.Context) {
 		return
 	}
 
-	token, err := createToken(s, user.Name, user.Email, user.ID, s.config)
+	token, err := createToken(s, user.Name, user.Email, user.Country, user.ID, s.config)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorRes(err))
@@ -337,13 +337,6 @@ func (s *Server) UpdateEmailReq(ctx *gin.Context) {
 		Digits: randomInt,
 	}
 
-	_, err = libs.SendMailWitSmtp([]string{user.Email}, resetPasswordMail, "updateEmail.html", "Update EMail")
-
-	if err != nil {
-		ctx.JSON(http.StatusConflict, errorRes(err))
-		return
-	}
-
 	n := dbn.Notification{
 		Content: "email update request",
 		UserID:  user.ID.String(),
@@ -352,6 +345,13 @@ func (s *Server) UpdateEmailReq(ctx *gin.Context) {
 	}
 
 	_ = messaging.SendNotification(n, s.ch)
+
+	_, err = libs.SendMailWitSmtp([]string{user.Email}, resetPasswordMail, "updateEmail.html", "Update EMail")
+
+	if err != nil {
+		ctx.JSON(http.StatusConflict, errorRes(err))
+		return
+	}
 
 	ctx.JSON(http.StatusOK, gin.H{"digits": randomInt})
 }
@@ -390,10 +390,11 @@ func (s *Server) ChangeEmail(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"msg": "updated"})
 }
 
-func createToken(s *Server, name string, email string, id uuid.UUID, config utils.Config) (string, error) {
+func createToken(s *Server, name string, email string, country string, id uuid.UUID, config utils.Config) (string, error) {
 	accToken, err := s.tokenMaker.CreateToken(
 		name,
 		email,
+		country,
 		id,
 		s.config.AccessTokenDuration,
 	)

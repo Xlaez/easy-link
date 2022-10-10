@@ -59,7 +59,6 @@ func (s *Server) GetUser(ctx *gin.Context) {
 
 		return
 	}
-
 	ctx.JSON(http.StatusOK, u)
 }
 
@@ -518,4 +517,63 @@ func (s *Server) GetAllUserConnectionsForPosts(ctx *gin.Context) {
 
 	_ = messaging.GetAllUserConnections(con, s.ch)
 	ctx.JSON(http.StatusOK, gin.H{"msg": "success"})
+}
+
+func (s *Server) GetUsersByCountry(ctx *gin.Context) {
+	var request GetUsersByCountry
+
+	if err := ctx.BindQuery(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*auth.Payload)
+
+	country := authPayload.Country
+
+	connections, err := s.store.GetAllUsersOfGivenLocation(ctx, db.GetAllUsersOfGivenLocationParams{
+		Country: country,
+		Limit:   request.PageSize,
+		Offset:  (request.PageID - 1) * request.PageSize,
+	})
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorRes(errors.New("no users in this location")))
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, connections)
+}
+
+func (s *Server) GetUsersByField(ctx *gin.Context) {
+	var request GetUsersByField
+
+	if err := ctx.BindQuery(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	field := sql.NullString{
+		String: request.Field,
+		Valid:  true,
+	}
+
+	users, err := s.store.GetUserByField(ctx, db.GetUserByFieldParams{
+		Field:  field,
+		Limit:  request.PageSize,
+		Offset: (request.PageID - 1) * request.PageSize,
+	})
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorRes(errors.New("no users with same field")))
+		}
+		ctx.JSON(http.StatusInternalServerError, errorRes(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, users)
 }

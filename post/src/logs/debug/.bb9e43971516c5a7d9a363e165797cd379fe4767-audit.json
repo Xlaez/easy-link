@@ -34,6 +34,16 @@
             "date": 1665010283471,
             "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-10-05.log",
             "hash": "0bdc79654a190a7f4354c5b9335e66ee61cc7e87df0d042222a67838b1fe31ea"
+        },
+        {
+            "date": 1665012770225,
+            "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-10-06.log",
+            "hash": "7f08493282ba924cac8cad3a2e489c988c4b442c61d683cc07acec59b3211cd3"
+        },
+        {
+            "date": 1665264171417,
+            "name": "/home/uty/KAMOU/easy-link/post/src/logs/debug/2022-10-08.log",
+            "hash": "e2b48e1daab451a8ba5efc80e1d1ff71aec42f00350ada5936d810a0d5d9fdfb"
         }
     ],
     "hashType": "sha256"

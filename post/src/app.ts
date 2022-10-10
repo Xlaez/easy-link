@@ -9,6 +9,9 @@ import helmet from 'helmet';
 import errorMiddleware from '@middlewares/error';
 import { Routes } from '@interfaces/routes';
 import connectDb from '@/config/db';
+import BrokerFactory from './messaging/initAmqp';
+import getMessages from './messaging/getMessages';
+import connAmqp from './messaging/connAmqp';
 
 class App {
   public app: Application;
@@ -25,6 +28,7 @@ class App {
     this.initalizeErrorHandling();
     this.initializeRoutes(routes);
     this.initializaDB();
+    // connAmqp();
   }
 
   public listen() {

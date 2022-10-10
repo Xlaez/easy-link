@@ -27,8 +27,8 @@ func NewPasteoMaker(symmetricKey string) (Maker, error) {
 	return maker, nil
 }
 
-func (maker *PasteoMaker) CreateToken(name string, email string, id uuid.UUID, duration time.Duration) (string, error) {
-	payload, err := NewPayload(name, email, id, duration)
+func (maker *PasteoMaker) CreateToken(name string, email string, country string, id uuid.UUID, duration time.Duration) (string, error) {
+	payload, err := NewPayload(name, email, country, id, duration)
 	if err != nil {
 		return "", err
 	}

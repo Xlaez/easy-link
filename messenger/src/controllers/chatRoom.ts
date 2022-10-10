@@ -1,17 +1,20 @@
+import { IAddMembersBody, ICreateNewRoom, IRemoveMembersBody, ISendRoomMsg } from '@/interfaces/chatRoom';
 import { cloudinaryService } from '@/libs';
 import ChatRoomService from '@/services/chatRoom';
 import getResourceType from '@/utils/getFileType';
+import { logger } from '@/utils/logger';
+import { FilterBannedWords } from '@/utils/safeWords';
 import { NextFunction, Request, Response } from 'express';
-import { File } from 'winston/lib/winston/transports';
 
 class ChatRoomController {
   constructor() {}
-  private service = new ChatRoomService();
+  private service: ChatRoomService = new ChatRoomService();
+  private filter: FilterBannedWords = new FilterBannedWords();
 
   public createNew = async (req: Request, res: Response, next: NextFunction) => {
-    const { body, file } = req;
+    const { body, file }: ICreateNewRoom = req;
 
-    let data;
+    let data: any;
 
     const { type, name, members, userId } = body;
 
@@ -45,9 +48,14 @@ class ChatRoomController {
 
   public createMsg = async (req: Request, res: Response, next: NextFunction) => {
     const { files } = req;
-    const { chatRoomId, message, userId } = req.body;
+    /**safeWords is passed as a field if the noFoulWords settings is on*/
+    const { chatRoomId, message, userId, safeWords }: ISendRoomMsg = req.body;
 
     let payload = {};
+    if (safeWords) {
+      const re: string | null = this.filter.filter(String(message));
+      if (typeof re == 'string') return res.status(400).json({ status: 'success', data: re });
+    }
 
     try {
       const room = await this.service.getRoomById(chatRoomId, userId);
@@ -101,7 +109,7 @@ class ChatRoomController {
   };
 
   public addMembers = async (req: Request, res: Response, next: NextFunction) => {
-    const { members, roomId } = req.body;
+    const { members, roomId }: IAddMembersBody = req.body;
     try {
       const membersExtist = await this.service.membersExistInRoom(roomId, members);
 
@@ -114,7 +122,7 @@ class ChatRoomController {
   };
 
   public removeMembers = async (req: Request, res: Response, next: NextFunction) => {
-    const { members, roomId, userId } = req.body;
+    const { members, roomId, userId }: IRemoveMembersBody = req.body;
     try {
       const r = this.service.removeMember(roomId, userId, members);
       if (!r) return res.status(500).json({ status: 'fail' });
@@ -126,7 +134,7 @@ class ChatRoomController {
   };
 
   public getRoomRecentConversation = async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.query;
+    const { userId }: { userId?: string } = req.query;
     try {
       const rooms = await this.service.getRoomsById(userId);
 
@@ -156,7 +164,7 @@ class ChatRoomController {
 
   public markMsgRead = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { roomId, userId } = req.body;
+      const { roomId, userId }: { roomId: string; userId: string } = req.body;
       const room = await this.service.getRoomById(roomId, userId);
 
       if (!room) return res.status(404).json({ status: 'fail', data: 'room not found' });
@@ -214,6 +222,30 @@ class ChatRoomController {
     try {
       const r = await this.service.deleteMessage(msgId);
       res.status(200).json({ status: 'success', data: r });
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public activateSafeWords = async (req: Request, res: Response, next: NextFunction) => {
+    const { roomId } = req.params;
+
+    try {
+      await this.service.activateSafeWords(String(roomId));
+      //   if (!room.noFoulWords) return res.status(500).json({ status: 'fail' });
+      res.status(200).json({ status: 'success' });
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public deactivateSafeWords = async (req: Request, res: Response, next: NextFunction) => {
+    const { roomId } = req.params;
+
+    try {
+      await this.service.deactivateSafeWords(String(roomId));
+      //   if (room.noFoulWords) return res.status(500).json({ status: 'fail' });
+      res.status(200).json({ status: 'success' });
     } catch (e) {
       next(e);
     }

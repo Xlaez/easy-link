@@ -1,0 +1,60 @@
+2022-10-09 17:59:56 error: uncaughtException: Cannot read properties of undefined (reading 'createOrg')
+TypeError: Cannot read properties of undefined (reading 'createOrg')
+    at OrganizationRouter.initializeRoutes (/home/uty/KAMOU/easy-link/organization/src/routes/organization.ts:18:95)
+    at new OrganizationRouter (/home/uty/KAMOU/easy-link/organization/src/routes/organization.ts:13:10)
+    at Object.<anonymous> (/home/uty/KAMOU/easy-link/organization/src/server.ts:7:22)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+2022-10-09 18:32:06 error: uncaughtException: This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason "#<Object>".
+UnhandledPromiseRejection: This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason "#<Object>".
+2022-10-09 18:38:11 error: uncaughtException: Cannot convert object to primitive value
+TypeError: Cannot convert object to primitive value
+    at Printf.template (/home/uty/KAMOU/easy-link/organization/src/utils/logger.ts:15:102)
+    at Printf.transform (/home/uty/KAMOU/easy-link/organization/node_modules/logform/printf.js:11:26)
+    at Format.transform (/home/uty/KAMOU/easy-link/organization/node_modules/logform/combine.js:20:24)
+    at DerivedLogger._transform (/home/uty/KAMOU/easy-link/organization/node_modules/winston/lib/winston/logger.js:313:29)
+    at DerivedLogger.Transform._read (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_transform.js:177:10)
+    at DerivedLogger.Transform._write (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_transform.js:164:83)
+    at doWrite (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_writable.js:409:139)
+    at writeOrBuffer (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_writable.js:398:5)
+    at DerivedLogger.Writable.write (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_writable.js:307:11)
+    at DerivedLogger.<computed> [as info] (/home/uty/KAMOU/easy-link/organization/node_modules/winston/lib/winston/create-logger.js:81:14)
+2022-10-09 18:38:40 error: uncaughtException: Cannot convert object to primitive value
+TypeError: Cannot convert object to primitive value
+    at Printf.template (/home/uty/KAMOU/easy-link/organization/src/utils/logger.ts:15:102)
+    at Printf.transform (/home/uty/KAMOU/easy-link/organization/node_modules/logform/printf.js:11:26)
+    at Format.transform (/home/uty/KAMOU/easy-link/organization/node_modules/logform/combine.js:20:24)
+    at DerivedLogger._transform (/home/uty/KAMOU/easy-link/organization/node_modules/winston/lib/winston/logger.js:313:29)
+    at DerivedLogger.Transform._read (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_transform.js:177:10)
+    at DerivedLogger.Transform._write (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_transform.js:164:83)
+    at doWrite (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_writable.js:409:139)
+    at writeOrBuffer (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_writable.js:398:5)
+    at DerivedLogger.Writable.write (/home/uty/KAMOU/easy-link/organization/node_modules/readable-stream/lib/_stream_writable.js:307:11)
+    at DerivedLogger.<computed> [as info] (/home/uty/KAMOU/easy-link/organization/node_modules/winston/lib/winston/create-logger.js:81:14)
+2022-10-09 18:57:20 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/organization.ts[0m:[93m17[0m:[93m29[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m17[0m         const isOrg = async this.service.GetOrgByName(body.name);
+[7m  [0m [91m                            ~~~~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/controllers/organization.ts[0m:[93m17[0m:[93m29[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m17[0m         const isOrg = async this.service.GetOrgByName(body.name);
+[7m  [0m [91m                            ~~~~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)

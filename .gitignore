@@ -8,3 +8,13 @@ messenger/yarn-error.lock
 user/.vscode
 messenger/src/logs
 post/src/logs
+organization/node_modules
+organization/.vscode
+organization/yarn-error.log
+organization/assets/images
+organization/assets/audio
+organization/assets/video
+post/assets/images
+post/assets/audio
+post/assets/video
+post/src/logs

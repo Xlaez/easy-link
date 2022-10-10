@@ -40,9 +40,12 @@ func main() {
 	configMsgQueue(config)
 	initializeLayers()
 
+	forever := make(chan bool)
+	go src.SendNotification(ch, collection)
+
 	router.Use(gin.Logger())
 
-	router.POST("/send", controller.SendNotification())
+	// router.POST("/send", controller.SendNotification())
 	router.GET("/get", controller.GetAllUserNotification())
 	router.GET("/get/:id", controller.GetNotificationById())
 	router.DELETE("/delete/:id", controller.DeleteNotification())
@@ -53,6 +56,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Cannot start server, exiting......", err)
 	}
+
+	<-forever
 }
 
 func configMsgQueue(config utils.Config) {

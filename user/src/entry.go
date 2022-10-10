@@ -46,5 +46,7 @@ func (s *Server) Router() {
 	userRoutes.GET("/sent-requests", s.GetSentRequests)          // get all sent request
 	userRoutes.DELETE("/un-connect/:id", s.UnConnectUser)        //unconnect a user
 	userRoutes.GET("/connections/:userId", s.GetAllUserConnectionsForPosts)
+	userRoutes.GET("/users-by-country", s.GetUsersByCountry)
+	userRoutes.GET("/users-by-field", s.GetUsersByField)
 	s.router = router
 }

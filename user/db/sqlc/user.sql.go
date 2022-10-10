@@ -328,6 +328,60 @@ func (q *Queries) GetAllUsers(ctx context.Context, arg GetAllUsersParams) ([]Use
 	return items, nil
 }
 
+const getAllUsersOfGivenLocation = `-- name: GetAllUsersOfGivenLocation :many
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at from "user"
+where country = $1
+limit $2
+offset $3
+`
+
+type GetAllUsersOfGivenLocationParams struct {
+	Country string `json:"country"`
+	Limit   int32  `json:"limit"`
+	Offset  int32  `json:"offset"`
+}
+
+func (q *Queries) GetAllUsersOfGivenLocation(ctx context.Context, arg GetAllUsersOfGivenLocationParams) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getAllUsersOfGivenLocation, arg.Country, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Country,
+			&i.Dob,
+			&i.Email,
+			&i.Field,
+			&i.FieldTitle,
+			&i.Bio,
+			&i.Password,
+			&i.AccType,
+			&i.AvatarUrl,
+			&i.AvatarID,
+			&i.Active,
+			&i.Valid,
+			&i.Connections,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getConnection = `-- name: GetConnection :one
 select id, user_1, user_2, blocked, created_at from "connection"
 where id = $1
@@ -396,6 +450,60 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const getUserByField = `-- name: GetUserByField :many
+select id, name, country, dob, email, field, field_title, bio, password, acc_type, avatar_url, avatar_id, active, valid, connections, created_at, updated_at from "user"
+where field = $1
+limit $2
+offset $3
+`
+
+type GetUserByFieldParams struct {
+	Field  sql.NullString `json:"field"`
+	Limit  int32          `json:"limit"`
+	Offset int32          `json:"offset"`
+}
+
+func (q *Queries) GetUserByField(ctx context.Context, arg GetUserByFieldParams) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getUserByField, arg.Field, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Country,
+			&i.Dob,
+			&i.Email,
+			&i.Field,
+			&i.FieldTitle,
+			&i.Bio,
+			&i.Password,
+			&i.AccType,
+			&i.AvatarUrl,
+			&i.AvatarID,
+			&i.Active,
+			&i.Valid,
+			&i.Connections,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const isEmailTaken = `-- name: IsEmailTaken :one

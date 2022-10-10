@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/uty/KAMOU/easy-link/organization/src/logs/error/.816243a9b37a79faf0479373c948b6e30715ef30-audit.json",
+    "files": [
+        {
+            "date": 1665334788525,
+            "name": "/home/uty/KAMOU/easy-link/organization/src/logs/error/2022-10-09.log",
+            "hash": "9b50781e97429b4371be4c4c5969b63ac64ed1b7147af2576d995c778f870df8"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -7,6 +7,7 @@ export interface IChatroom extends Document {
   brand: string;
   name: string;
   type: string;
+  noFoulWords: boolean;
 }
 
 const schema = new Schema(
@@ -36,6 +37,10 @@ const schema = new Schema(
       type: String,
       required: true,
       enum: ['temporary', 'permanent', 'organization'],
+    },
+    noFoulWords: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },

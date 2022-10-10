@@ -1,4 +1,5 @@
 import { postService } from '@/services';
+import amqp from 'amqplib/callback_api';
 import { NextFunction, Request, Response } from 'express';
 
 class PostController {
@@ -144,6 +145,31 @@ class PostController {
   public getPostsForUserFeed = async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.query;
     // get from amqp
+    amqp.connect('amqp://guest:password@localhost:5672', async function (error, connection) {
+      if (error) {
+        throw error;
+      }
+      connection.createChannel(function (error1, channel) {
+        if (error1) {
+          throw error1;
+        }
+        var queue = 'get-connections';
+
+        channel.assertQueue(queue, {
+          durable: false,
+        });
+
+        channel.consume(
+          'get-connections',
+          function (msg) {
+            const m = msg.content.toString();
+          },
+          {
+            noAck: true,
+          },
+        );
+      });
+    });
   };
 }
 
