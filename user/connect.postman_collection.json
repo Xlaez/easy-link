@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "55aac913-61ae-4e47-bf9e-a8522f35c335",
+		"name": "connect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Utibeabasi Effiong\",\n    \"email\": \"utibeabasiekong@gmail.com\",\n    \"password\": \"xlaezkamou\",\n    \"field\": \"business\",\n    \"fieldTitle\": \"business analyst\",\n    \"accType\": \"login\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8585/api/v1/auth/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"utibeabasiekong@gmail.com\",\n    \"password\": \"xlaezkamou\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8585/api/v1/auth/signin",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{t}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8585/api/v1/user/profile/05480e57-2835-414f-9ac9-285bcfab36d4",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"profile",
+						"05480e57-2835-414f-9ac9-285bcfab36d4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "v2.local.ytdpqDPhiobSsziH1QB-bunCocrep1Pag2oSBnHGrqHY25ArMw1BcN0iZhKpUT1j3r6uRddmBdTbs9PK-qYHBfu7WnnYyKAzP0e8k2H-xOIckh9Hh71Wg69mIrxufuzhOc_3xOSt8XTpEbH510bRrRA3kIDNAg8QLYSX6F123jeOdUUsVdO1ZXhWLTkDgOtc6tZg6EQNamXGY6_Ox33csltFcxOM16yP-IWi4UjIirLUeFGj9bUP_3yObvcPnjcfpjjuefnxLQwywYq4NGh708wfK39m7-3nSxs_pXA.bnVsbA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8585/api/v1/user/all?page_id=1&page_size=3",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"all"
+					],
+					"query": [
+						{
+							"key": "page_id",
+							"value": "1"
+						},
+						{
+							"key": "page_size",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update bio",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temp_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"28033047-a101-4a3c-88bc-09346555004c\",\n    \"bio\": \"hey guys am an business administrator and am 18 years old\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8585/api/v1/user/bio",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"bio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload avatar",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temp_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"28033047-a101-4a3c-88bc-09346555004c\",\n    \"bio\": \"hey guys am an business administrator and am 18 years old\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8585/api/v1/user/bio",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"bio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "v2.local.s7t1aSIEygJh0dXKFyDcW09zzpjMgnQjJryy9VsSvcfn9fG-B7U4-HHP7XtaUTTl0sWkRj_RnvA6gi1treE7ISCsLhdDRxjFcjb4GZL-_IVBW_mu5btXIJqfww9SMN-OrAZ1cJbDB5mxl5fgo7hOF6Jpa790YW3YenliZAEHLD2opZXzlNxpNEAdfDymMRWgl3bAUdRTwmiwzODHpUZy1tIYxd3LjyEv06Rj0I-6FexP8XMipMq8z8fHGtQmr3ZjLZ17UAGy5SfubfTUGX9rZMX0JuUSJX9dVdLHeuE.bnVsbA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"xlaezkamou\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8585/api/v1/user/account",
+					"host": [
+						"localhost"
+					],
+					"port": "8585",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"account"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "temp_token",
+			"value": "v2.local.qHbf-49nCKfToPCEM2XSnGFfKqM43M9KoHkbf8eiVLC55DjYpufVohu1cen9R0mljOpDSsthDA6WaxXhHR1dvbWjtoySp3-tLqqkBeURH5ga2gsw0CtCMiZc9L6ZmIO4tLrUs-NqgGFTugRmYkEIpzeDrTk7PXNX4w8iuTLTXnqVOlGlOdvA-WftYhJa2b0YeytuRs4JJ07POawkVpsxWNe1OW7YlJ9vIRP6D4PK1u9Y6I4xOatioJcFltXiAH_Vw3IDOdPeDuMpvI4azRrSGnYrf_SFUpn5Mj-P-w.bnVsbA"
+		},
+		{
+			"key": "t",
+			"value": "v2.local.hsBRIDN2VTotHM3pV_burub6_g53iJ7GO3zJPJtYy0KjMqvvfY2c-XJkok-nqSfHeOEXO9nwgyKQIwPDNeG5NxWo79lo-dAQ0sFkXdrBBp_gy6mQWvent2kfyMjz3EtcegALKZnfZk4nq1iu8Df6BEB5yLfhEausvxKaz_4vOqagN2QoPlaoLjkFl2k9pVN-kvesgZAu-SBa_Kj1_CVe6OchMmLbvm0eWEET-xy5ZyyT7G5nN1ab_qf59ZY4j2zK_n1nA9t8yfuCOG-0F3V25fhLwtHxdWU2qs0xLg.bnVsbA"
+		}
+	]
+}

@@ -1,0 +1,615 @@
+{
+	"info": {
+		"_postman_id": "c54c66de-aeb1-4b69-8bad-35470baaa639",
+		"name": "connect organization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create org",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "upload",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-09-16 14-07-02.png",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "org exemplary",
+							"type": "default"
+						},
+						{
+							"key": "userId",
+							"value": "a52cc297-9938-4fe5-b516-3d4a7ff235c1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8181/new",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get org by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/by-name?name=org exemplary",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "org exemplary"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get org by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/by-id?id=634309aeb9647a3452bc6ec7",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"by-id"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "634309aeb9647a3452bc6ec7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete org",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/remove/63430979750be2e8cff12b56",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"remove",
+						"63430979750be2e8cff12b56"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all orgs user is in",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "we are going to be having a meeting by 8",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "today's assignment would be given to team h",
+							"type": "default"
+						},
+						{
+							"key": "author",
+							"value": "522a3a45-ddbd-4077-8ac0-3fa9ff742e42",
+							"type": "default"
+						},
+						{
+							"key": "orgId",
+							"value": "634309aeb9647a3452bc6ec7",
+							"type": "default"
+						},
+						{
+							"key": "uploads",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-10-10 01-42-03.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8181/user-in/?userId=a52cc297-9938-4fe5-b516-3d4a7ff235c1&pageNo=1&pageSize=3",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"user-in",
+						""
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "a52cc297-9938-4fe5-b516-3d4a7ff235c1"
+						},
+						{
+							"key": "pageNo",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update org",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":\"63430979750be2e8cff12b56\",\n    \"name\":\"new dawn\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/update",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add members",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":\"634309aeb9647a3452bc6ec7\",\n    \"members\":[\"522a3a45-ddbd-4077-8ac0-3fa9ff742e42\", \"a52cc297-9938-4fe5-b516-3d4a7ff235c1\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/members",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add executives",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":\"634309aeb9647a3452bc6ec7\",\n    \"members\":[\"522a3a45-ddbd-4077-8ac0-3fa9ff742e42\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/executives",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"executives"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove executives",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PURGE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":\"634309aeb9647a3452bc6ec7\",\n    \"members\":[\"522a3a45-ddbd-4077-8ac0-3fa9ff742e42\",\"a52cc297-9938-4fe5-b516-3d4a7ff235c1\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/executives",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"executives"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove members",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PURGE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":\"634309aeb9647a3452bc6ec7\",\n    \"members\":[\"522a3a45-ddbd-4077-8ac0-3fa9ff742e42\",\"a52cc297-9938-4fe5-b516-3d4a7ff235c1\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/members",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new info",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "we are going to be having a meeting by 8",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "today's assignment would be given to team h",
+							"type": "default"
+						},
+						{
+							"key": "author",
+							"value": "522a3a45-ddbd-4077-8ac0-3fa9ff742e42",
+							"type": "default"
+						},
+						{
+							"key": "orgId",
+							"value": "634309aeb9647a3452bc6ec7",
+							"type": "default"
+						},
+						{
+							"key": "uploads",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-10-10 01-42-03.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8181/info/resource",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"info",
+						"resource"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update info content",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"the meeting has been re-scheduled for 9pm\",\n    \"infoId\": \"6343a0f88451ba9d53659d8b\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/info/resource",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"info",
+						"resource"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all org info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "we are going to be having a meeting by 8",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "today's assignment would be given to team h",
+							"type": "default"
+						},
+						{
+							"key": "author",
+							"value": "522a3a45-ddbd-4077-8ac0-3fa9ff742e42",
+							"type": "default"
+						},
+						{
+							"key": "orgId",
+							"value": "634309aeb9647a3452bc6ec7",
+							"type": "default"
+						},
+						{
+							"key": "uploads",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-10-10 01-42-03.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8181/info/resources?title=assignment&pageNo=1&pageSize=3&sortBy=oldest&orgId=634309aeb9647a3452bc6ec7",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"info",
+						"resources"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "assignment"
+						},
+						{
+							"key": "pageNo",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "3"
+						},
+						{
+							"key": "sortBy",
+							"value": "oldest"
+						},
+						{
+							"key": "orgId",
+							"value": "634309aeb9647a3452bc6ec7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "we are going to be having a meeting by 8",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "today's assignment would be given to team h",
+							"type": "default"
+						},
+						{
+							"key": "author",
+							"value": "522a3a45-ddbd-4077-8ac0-3fa9ff742e42",
+							"type": "default"
+						},
+						{
+							"key": "orgId",
+							"value": "634309aeb9647a3452bc6ec7",
+							"type": "default"
+						},
+						{
+							"key": "uploads",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-10-10 01-42-03.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8181/info/resource?orgId=634309aeb9647a3452bc6ec7&infoId=6343a0f88451ba9d53659d8b",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"info",
+						"resource"
+					],
+					"query": [
+						{
+							"key": "orgId",
+							"value": "634309aeb9647a3452bc6ec7"
+						},
+						{
+							"key": "infoId",
+							"value": "6343a0f88451ba9d53659d8b"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete info",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8181/info/resource/63439b78ddfa25926863bada",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"info",
+						"resource",
+						"63439b78ddfa25926863bada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add view",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"infoId\": \"6343a0f88451ba9d53659d8b\",\n    \"userId\": \"a52cc297-9938-4fe5-b516-3d4a7ff235c1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8181/info/add-view",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"info",
+						"add-view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update logo",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "upload",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-10-01 18-31-52.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8181/update-logo",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"update-logo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

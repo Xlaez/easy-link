@@ -1,0 +1,580 @@
+{
+	"info": {
+		"_postman_id": "9d295604-4784-406d-8dd8-e5a16525656e",
+		"name": "connect msgs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "send msg",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "msg",
+							"value": "Hey how are u sir",
+							"type": "default"
+						},
+						{
+							"key": "from",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1",
+							"type": "default"
+						},
+						{
+							"key": "to",
+							"value": "68639066-50cd-4b3f-8854-b57b5aa377a7",
+							"type": "default"
+						},
+						{
+							"key": "convId",
+							"value": "633889f036cdb5cc3d9cb9b9",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8881/msg/send",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create chat room",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1",
+							"type": "default"
+						},
+						{
+							"key": "members",
+							"value": "68639066-50cd-4b3f-8854-b57b5aa377a7",
+							"type": "default"
+						},
+						{
+							"key": "type",
+							"value": "temporary",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "all everything",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/create-room",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"create-room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mark message read",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1",
+							"type": "default"
+						},
+						{
+							"key": "roomId",
+							"value": "63378429859f2e822b0cdc23",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/read-msg",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"read-msg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update room",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "Everything",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/update/63378429859f2e822b0cdc23",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"update",
+						"63378429859f2e822b0cdc23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "leave room",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PURGE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/leave/63378429859f2e822b0cdc23/68639066-50cd-4b3f-8854-b57b5aa377aa7",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"leave",
+						"63378429859f2e822b0cdc23",
+						"68639066-50cd-4b3f-8854-b57b5aa377aa7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search room by name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1",
+							"type": "default"
+						},
+						{
+							"key": "members",
+							"value": "68639066-50cd-4b3f-8854-b57b5aa377a7",
+							"type": "default"
+						},
+						{
+							"key": "type",
+							"value": "temporary",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "tech boss exco",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/search-rooms?userId=68639066-50cd-4b3f-8854-b57b5aa377a7&keyword=tech",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"search-rooms"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "68639066-50cd-4b3f-8854-b57b5aa377a7"
+						},
+						{
+							"key": "keyword",
+							"value": "tech"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get recent rooms conversation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/chat-room/recent-room?userId=68639066-50cd-4b3f-8854-b57b5aa377a7",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"recent-room"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "68639066-50cd-4b3f-8854-b57b5aa377a7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get msgs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/msg?from=b9beae35-6430-456b-b4be-d68dae0f2fb1&to=68639066-50cd-4b3f-8854-b57b5aa377a7&convId=633889f036cdb5cc3d9cb9b9",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1"
+						},
+						{
+							"key": "to",
+							"value": "68639066-50cd-4b3f-8854-b57b5aa377a7"
+						},
+						{
+							"key": "convId",
+							"value": "633889f036cdb5cc3d9cb9b9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "block conv",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/msg/block/633889f036cdb5cc3d9cb9b9/b9beae35-6430-456b-b4be-d68dae0f2fb1",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg",
+						"block",
+						"633889f036cdb5cc3d9cb9b9",
+						"b9beae35-6430-456b-b4be-d68dae0f2fb1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "activate safe words",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/chat-room/safe-words/63377c7cbe2711d37e3ec6c2",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"safe-words",
+						"63377c7cbe2711d37e3ec6c2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "de-activate safe words",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/chat-room/remove-safe-words/63377c7cbe2711d37e3ec6c2",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"remove-safe-words",
+						"63377c7cbe2711d37e3ec6c2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unblock conv",
+			"request": {
+				"method": "PURGE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/msg/unblock/633889f036cdb5cc3d9cb9b9/b9beae35-6430-456b-b4be-d68dae0f2fb1",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg",
+						"unblock",
+						"633889f036cdb5cc3d9cb9b9",
+						"b9beae35-6430-456b-b4be-d68dae0f2fb1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send room msg",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "b9beae35-6430-456b-b4be-d68dae0f2fb1",
+							"type": "default"
+						},
+						{
+							"key": "message",
+							"value": "how are you motherfucker",
+							"type": "default"
+						},
+						{
+							"key": "chatRoomId",
+							"value": "63378429859f2e822b0cdc23",
+							"type": "default"
+						},
+						{
+							"key": "uploads",
+							"type": "file",
+							"src": "/home/uty/Pictures/Screenshot from 2022-10-05 19-53-00.png"
+						},
+						{
+							"key": "safeWords",
+							"value": "true",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/send-msg",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"send-msg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set msg as seen",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/msg/seen/63371b4d25f63537d3d453a7",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg",
+						"seen",
+						"63371b4d25f63537d3d453a7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add reaction",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"63371b4d25f63537d3d453a7\",\n    \"reaction\": \"wow\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/msg/reaction",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg",
+						"reaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set msg as deleted",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/msg/delete/63371b4d25f63537d3d453a7",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"msg",
+						"delete",
+						"63371b4d25f63537d3d453a7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add members to room",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"members\": [\"b9beae35-6430-456b-b4be-d68dae0f2fb1, 3501ba49-b2e6-4396-ad35-27442c1331b6\"],\n    \"roomId\": \"63378429859f2e822b0cdc23\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8881/chat-room/members",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set chat room msg as deleted",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8881/chat-room/delete/63388b9d3c58eacaf62c2f20",
+					"host": [
+						"localhost"
+					],
+					"port": "8881",
+					"path": [
+						"chat-room",
+						"delete",
+						"63388b9d3c58eacaf62c2f20"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

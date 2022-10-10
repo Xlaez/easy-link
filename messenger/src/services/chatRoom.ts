@@ -8,16 +8,18 @@ class ChatRoomService {
   private room = chatRoom;
   private roomMsg = chatRoomMsgs;
 
-  public checkChatRoom = async (name: string): Promise<string> => {
+  public checkChatRoom = async (name: string, type: string): Promise<string> => {
     const availableChatRooms = await this.room.findOne({ $and: [{ name }, { type: 'temporary' }] });
 
-    if (availableChatRooms) return 'chat room exists';
-
+    if (availableChatRooms) {
+      if (availableChatRooms.type === 'temporary' && type !== 'temporary') return 'room is available';
+      return 'chat room exists';
+    }
     return 'room is available';
   };
 
   public createChatRoom = async (data: any): Promise<string | IChatroom> => {
-    const isChatRoomAvailable = await this.checkChatRoom(data.name);
+    const isChatRoomAvailable = await this.checkChatRoom(data.name, data.type);
 
     if (isChatRoomAvailable === 'chat room exists') return 'chat room exists';
 
@@ -207,7 +209,7 @@ class ChatRoomService {
   };
 
   public leaveRoom = async (chatRoomId: string, userId: string): Promise<any> => {
-    const result = await this.room.findByIdAndUpdate(chatRoomId, { $pull: { members: userId } }, { new: true });
+    const result = await this.room.findByIdAndUpdate(chatRoomId, { $pull: { members: { $in: userId } } }, { new: true });
 
     return result;
   };

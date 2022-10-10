@@ -1,4 +1,4 @@
-import express, { Application, json, urlencoded } from 'express';
+import express, { Application, json, NextFunction, Response, urlencoded } from 'express';
 import morgan from 'morgan';
 import { CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT } from '@config';
 import hpp from 'hpp';
@@ -9,17 +9,20 @@ import helmet from 'helmet';
 import errorMiddleware from '@middlewares/error';
 import { Routes } from '@interfaces/routes';
 import connectDb from '@/config/db';
+import http from 'http';
+import Socket from '@/socket';
 
 class App {
   public app: Application;
   public env: string;
   public port: string | number;
+  public htp: http.Server;
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 8881;
-
+    this.htp = new http.Server(this.app);
     // Initialize middlewares here
     this.initializeMiddlewares();
     this.initalizeErrorHandling();
@@ -41,6 +44,10 @@ class App {
   }
 
   public initializeMiddlewares() {
+    this.app.use((req: any, res: Response, next: NextFunction) => {
+      req.io = new Socket().getIo(this.htp);
+      next();
+    });
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(helmet());

@@ -105,6 +105,8 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		Link: link,
 	}
 
+	fmt.Println(token)
+
 	ok, err := libs.SendMailWitSmtp([]string{u.Email}, templatedata, "signup.html", "Validate Account")
 
 	if err != nil {
@@ -172,6 +174,11 @@ func (s *Server) logInUser(ctx *gin.Context) {
 			return
 		}
 		ctx.JSON(http.StatusBadRequest, errorRes(err))
+		return
+	}
+
+	if !user.Valid {
+		ctx.JSON(http.StatusForbidden, errorRes(errors.New("user's account not verified")))
 		return
 	}
 

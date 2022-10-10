@@ -9,6 +9,11 @@
             "date": 1665334788525,
             "name": "/home/uty/KAMOU/easy-link/organization/src/logs/error/2022-10-09.log",
             "hash": "9b50781e97429b4371be4c4c5969b63ac64ed1b7147af2576d995c778f870df8"
+        },
+        {
+            "date": 1665364246038,
+            "name": "/home/uty/KAMOU/easy-link/organization/src/logs/error/2022-10-10.log",
+            "hash": "39105314ff85a3caa5443a8118d523b9b253edae3b03155f30ea96f69388547b"
         }
     ],
     "hashType": "sha256"

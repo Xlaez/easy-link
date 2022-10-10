@@ -1,0 +1,244 @@
+2022-10-10 03:20:53 error: uncaughtException: Identifier 'members' has already been declared
+/home/uty/KAMOU/easy-link/organization/src/controllers/organization.ts:84
+            const { members, id } = req.body;
+                    ^
+
+SyntaxError: Identifier 'members' has already been declared
+    at Object.compileFunction (node:vm:360:18)
+    at wrapSafe (node:internal/modules/cjs/loader:1055:15)
+    at Module._compile (node:internal/modules/cjs/loader:1090:27)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+    at require (node:internal/modules/cjs/helpers:102:18)
+2022-10-10 03:37:26 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m73[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                        ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m74[0m - [91merror[0m[90m TS1136: [0mProperty assignment expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                         ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m94[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                                             ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m96[0m - [91merror[0m[90m TS1472: [0m'catch' or 'finally' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                                               ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m97[0m - [91merror[0m[90m TS1005: [0m';' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                                                ~[0m
+[96msrc/services/organization.ts[0m:[93m60[0m:[93m7[0m - [91merror[0m[90m TS1068: [0mUnexpected token. A constructor, method, accessor, or property was expected.
+
+[7m60[0m       return org;
+[7m  [0m [91m      ~~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m61[0m:[93m5[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m61[0m     } catch (e) {
+[7m  [0m [91m    ~[0m
+[96msrc/services/organization.ts[0m:[93m61[0m:[93m7[0m - [91merror[0m[90m TS1005: [0m'try' expected.
+
+[7m61[0m     } catch (e) {
+[7m  [0m [91m      ~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m64[0m:[93m3[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m64[0m   };
+[7m  [0m [91m  ~[0m
+[96msrc/services/organization.ts[0m:[93m66[0m:[93m3[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m66[0m   public Removemembers = async (members: any, id: string) => {
+[7m  [0m [91m  ~~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m74[0m:[93m1[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m74[0m }
+[7m  [0m [91m~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m73[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                        ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m74[0m - [91merror[0m[90m TS1136: [0mProperty assignment expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                         ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m94[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                                             ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m96[0m - [91merror[0m[90m TS1472: [0m'catch' or 'finally' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                                               ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m97[0m - [91merror[0m[90m TS1005: [0m';' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{{ members: members }} });
+[7m  [0m [91m                                                                                                ~[0m
+[96msrc/services/organization.ts[0m:[93m60[0m:[93m7[0m - [91merror[0m[90m TS1068: [0mUnexpected token. A constructor, method, accessor, or property was expected.
+
+[7m60[0m       return org;
+[7m  [0m [91m      ~~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m61[0m:[93m5[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m61[0m     } catch (e) {
+[7m  [0m [91m    ~[0m
+[96msrc/services/organization.ts[0m:[93m61[0m:[93m7[0m - [91merror[0m[90m TS1005: [0m'try' expected.
+
+[7m61[0m     } catch (e) {
+[7m  [0m [91m      ~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m64[0m:[93m3[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m64[0m   };
+[7m  [0m [91m  ~[0m
+[96msrc/services/organization.ts[0m:[93m66[0m:[93m3[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m66[0m   public Removemembers = async (members: any, id: string) => {
+[7m  [0m [91m  ~~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m74[0m:[93m1[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m74[0m }
+[7m  [0m [91m~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-10 03:37:43 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m73[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{ members: members } });
+[7m  [0m [91m                                                                        ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m94[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{ members: members } });
+[7m  [0m [91m                                                                                             ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m95[0m - [91merror[0m[90m TS1472: [0m'catch' or 'finally' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{ members: members } });
+[7m  [0m [91m                                                                                              ~[0m
+[96msrc/services/organization.ts[0m:[93m61[0m:[93m7[0m - [91merror[0m[90m TS1005: [0m';' expected.
+
+[7m61[0m     } catch (e) {
+[7m  [0m [91m      ~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m66[0m:[93m3[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m66[0m   public Removemembers = async (members: any, id: string) => {
+[7m  [0m [91m  ~~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m74[0m:[93m1[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m74[0m }
+[7m  [0m [91m~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m73[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{ members: members } });
+[7m  [0m [91m                                                                        ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m94[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{ members: members } });
+[7m  [0m [91m                                                                                             ~[0m
+[96msrc/services/organization.ts[0m:[93m59[0m:[93m95[0m - [91merror[0m[90m TS1472: [0m'catch' or 'finally' expected.
+
+[7m59[0m       const org = await this.schema.findByIdAndUpdate(id, { $push: $each{ members: members } });
+[7m  [0m [91m                                                                                              ~[0m
+[96msrc/services/organization.ts[0m:[93m61[0m:[93m7[0m - [91merror[0m[90m TS1005: [0m';' expected.
+
+[7m61[0m     } catch (e) {
+[7m  [0m [91m      ~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m66[0m:[93m3[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m66[0m   public Removemembers = async (members: any, id: string) => {
+[7m  [0m [91m  ~~~~~~[0m
+[96msrc/services/organization.ts[0m:[93m74[0m:[93m1[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+[7m74[0m }
+[7m  [0m [91m~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-10 05:08:43 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/info.ts[0m:[93m7[0m:[93m140[0m - [91merror[0m[90m TS1005: [0m'>' expected.
+
+[7m7[0m   public CreateInfo = async (data: {content?: string, title?:string, author: string, orgId: string, fileType?:string, fileUrl?:Array<string}) => {
+[7m [0m [91m                                                                                                                                           ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/info.ts[0m:[93m7[0m:[93m140[0m - [91merror[0m[90m TS1005: [0m'>' expected.
+
+[7m7[0m   public CreateInfo = async (data: {content?: string, title?:string, author: string, orgId: string, fileType?:string, fileUrl?:Array<string}) => {
+[7m [0m [91m                                                                                                                                           ~[0m
+
+    at createTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:863:19)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1379:34
+    at Object.compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1458:13)
+    at Module.m._compile (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/uty/KAMOU/easy-link/organization/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1004:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:839:12)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+2022-10-10 06:01:22 error: uncaughtException: OrgInfo validation failed: author: Path `author` is required.
+ValidationError: OrgInfo validation failed: author: Path `author` is required.
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:3054:32)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:2842:17
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/schematype.js:1349:9
+    at processTicksAndRejections (node:internal/process/task_queues:78:11)
+2022-10-10 11:37:46 error: uncaughtException: OrgInfo validation failed: orgId: Cast to ObjectId failed for value "[634309aeb9647a3452bc6ec7]" (type string) at path "orgId" because of "BSONTypeError"
+ValidationError: OrgInfo validation failed: orgId: Cast to ObjectId failed for value "[634309aeb9647a3452bc6ec7]" (type string) at path "orgId" because of "BSONTypeError"
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:3054:32)
+    at model.$set (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:1409:12)
+    at model.$set (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:1092:16)
+    at model.Document (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:166:12)
+    at model.Model (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:119:12)
+    at new model (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:4999:15)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3160:22
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3195:7
+    at Array.forEach (<anonymous>)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3194:15
+2022-10-10 11:38:26 error: uncaughtException: OrgInfo validation failed: orgId: Cast to ObjectId failed for value "true" (type string) at path "orgId" because of "BSONTypeError"
+ValidationError: OrgInfo validation failed: orgId: Cast to ObjectId failed for value "true" (type string) at path "orgId" because of "BSONTypeError"
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:3054:32)
+    at model.$set (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:1409:12)
+    at model.$set (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:1092:16)
+    at model.Document (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:166:12)
+    at model.Model (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:119:12)
+    at new model (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:4999:15)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3160:22
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3195:7
+    at Array.forEach (<anonymous>)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3194:15
+2022-10-10 11:40:44 error: uncaughtException: OrgInfo validation failed: orgId: Cast to ObjectId failed for value "true" (type string) at path "orgId" because of "BSONTypeError"
+ValidationError: OrgInfo validation failed: orgId: Cast to ObjectId failed for value "true" (type string) at path "orgId" because of "BSONTypeError"
+    at model.Document.invalidate (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:3054:32)
+    at model.$set (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:1409:12)
+    at model.$set (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:1092:16)
+    at model.Document (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/document.js:166:12)
+    at model.Model (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:119:12)
+    at new model (/home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:4999:15)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3160:22
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3195:7
+    at Array.forEach (<anonymous>)
+    at /home/uty/KAMOU/easy-link/organization/node_modules/mongoose/lib/model.js:3194:15
