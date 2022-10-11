@@ -6,8 +6,10 @@ import (
 
 	db "github.com/Xlaez/easy-link/db/sqlc"
 	// "github.com/Xlaez/easy-link/messaging"
+
 	"github.com/Xlaez/easy-link/src"
 	"github.com/Xlaez/easy-link/utils"
+	"github.com/gorilla/websocket"
 	_ "github.com/lib/pq"
 	"github.com/streadway/amqp"
 )
@@ -18,6 +20,14 @@ var (
 	// repo messaging.Repo
 )
 
+var upgrader = websocket.Upgrader{
+	//check origin will check the cross region source (note : please not using in production)
+	// CheckOrigin: func(r *http.Request) bool {
+	//Here we just allow the chrome extension client accessable (you should check this verify accourding your client source)
+	// return origin == "chrome-extension://cbcbkhdmedgianpaifchdaddpnmgnknn"
+	// },
+}
+
 func main() {
 	config, err := utils.LoadConfig(".")
 
@@ -25,6 +35,10 @@ func main() {
 		log.Fatal("Error: cannot load env", err)
 	}
 	connectMsgQueue(config)
+	// init sockets
+	hub := src.NewHub()
+	go hub.Run()
+
 	connectDB(config)
 	// initLayers(config)
 }
