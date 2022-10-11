@@ -22,7 +22,7 @@ const MsgSchema = new Schema(
   {
     chatRoomId: {
       type: Schema.Types.ObjectId,
-      ref: 'ChatRoom',
+      //   ref: 'ChatRoom',
     },
     message: {
       type: Schema.Types.Mixed,

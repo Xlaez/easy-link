@@ -1,19 +1,35 @@
 import { Schema, model, Document } from 'mongoose';
 
+export interface IReadByRecipient extends Document {
+  readByUserId: string;
+  updatedAt: Date;
+  createdAt: Date;
+  _id: string;
+}
+
 export interface IMsg extends Document {
   isDeleted: boolean;
   msg: string;
   reaction: string;
-  seen: boolean;
   sender: string;
   users: Array<string>;
+  createdAt: Date;
+  conv: string;
+  readByRecipients: Array<IReadByRecipient>;
   file: {
     fileUrl: string;
     fileType: string;
   };
-  createdAt: Date;
-  conv: string;
 }
+
+const ReadByRecipientSchema = new Schema(
+  {
+    readByUserId: { type: String },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 const schema = new Schema(
   {
@@ -30,10 +46,6 @@ const schema = new Schema(
       type: String,
       required: false,
       enum: ['wow', 'smile', 'love'],
-    },
-    seen: {
-      type: Boolean,
-      default: false,
     },
     sender: {
       type: String,
@@ -57,11 +69,12 @@ const schema = new Schema(
       },
     },
     conv: {
-        type: Schema.Types.ObjectId,
-        ref: 'Conversation',
-    }
+      type: Schema.Types.ObjectId,
+      ref: 'Conversation',
+    },
+    readByRecipients: [ReadByRecipientSchema],
   },
-  { timestamps: true, toJSON: { virtuals: true } },
+  { timestamps: true },
 );
 
 export default model<IMsg>('Message', schema);

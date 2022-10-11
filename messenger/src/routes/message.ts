@@ -18,11 +18,12 @@ class MsgRouter implements Routes2 {
   private initializeRoutes() {
     this.router.post(`${this.path}/send`, multerSetup.singleUpload, this.msgController.sendMsg);
     this.router.get(`${this.path}`, this.msgController.getMsg);
-    this.router.patch(`${this.path}/seen/:id`, this.msgController.setMsgAsSeen);
+    this.router.patch(`${this.path}/seen/:id/:userId`, this.msgController.setMsgAsSeen);
     this.router.delete(`${this.path}/delete/:id`, this.msgController.setMsgAsDeleted);
     this.router.put(`${this.path}/reaction`, this.msgController.addReaction);
     this.router.patch(`${this.path}/block/:convId/:userId`, this.msgController.blockConversation);
     this.router.purge(`${this.path}/unblock/:convId/:userId`, this.msgController.unblockConversation);
+    this.router.get(`${this.path}/recent`, this.msgController.getAllUserRecentMessages);
 
     this.router.post(`${this.path2}/create-room`, multerSetup.singleUpload, this.chatController.createNew);
     this.router.post(`${this.path2}/send-msg`, multerSetup.multipleUpload, this.chatController.createMsg);

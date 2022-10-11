@@ -122,9 +122,9 @@ class ChatRoomController {
   };
 
   public removeMembers = async (req: Request, res: Response, next: NextFunction) => {
-    const { members, roomId, userId }: IRemoveMembersBody = req.body;
+    const { members, roomId }: IRemoveMembersBody = req.body;
     try {
-      const r = this.service.removeMember(roomId, userId, members);
+      const r = this.service.removeMember(roomId, members);
       if (!r) return res.status(500).json({ status: 'fail' });
 
       res.status(200).json({ status: 'success' });
@@ -139,12 +139,17 @@ class ChatRoomController {
       const rooms = await this.service.getRoomsById(userId);
 
       if (!rooms.length) return res.status(404).json({ status: 'fail', data: "rooms can't be found" });
-      const allRooms = rooms.map((room: any) => room.id);
+      const allRooms = rooms.map((room: any) => room._id);
 
       const recentRoom = await this.service.getRoomRecentConversation(allRooms, userId);
 
       const r = recentRoom.map((conversation: any) => {
-        const readBy = conversation.readByRecipients.flat();
+        const readBy = conversation.readByRecipients.map((el: any) => {
+          return {
+            userId: el.readByUserId,
+            readAt: el.createdAt,
+          };
+        });
 
         return {
           id: conversation._id,
@@ -153,7 +158,7 @@ class ChatRoomController {
           message: conversation.message,
           sendBy: conversation.sendBy,
           unreadMsgs: conversation.unreadMessages,
-          readBy,
+          readBy: readBy.flat(),
         };
       });
       res.status(200).json({ status: 'success', data: r });

@@ -8,7 +8,16 @@ class ChatRoomService {
   private room = chatRoom;
   private roomMsg = chatRoomMsgs;
 
+  /**
+   * checks chat rooms for a temporary chat room with same name
+   * @param name is the intended name for the chatroom
+   * @param type is the intended type for the chatroom
+   * @returns typeof string ["room is available"] if intended type is not temporary
+   * and ["chat room exists"] if type is temporary and chatroom with type temporary already exists
+   */
   public checkChatRoom = async (name: string, type: string): Promise<string> => {
+    if (type === 'organization' || type === 'permanent') return 'room is available';
+
     const availableChatRooms = await this.room.findOne({ $and: [{ name }, { type: 'temporary' }] });
 
     if (availableChatRooms) {
@@ -24,7 +33,7 @@ class ChatRoomService {
     if (isChatRoomAvailable === 'chat room exists') return 'chat room exists';
 
     const newChatRoom = await this.room.create(data);
-    await this.room.findByIdAndUpdate(newChatRoom._id, { $push: { members: data.initiator } });
+    await this.room.findByIdAndUpdate(newChatRoom._id, { $addToSet: { members: data.initiator } });
     return newChatRoom;
   };
 
@@ -33,19 +42,20 @@ class ChatRoomService {
     return chatRooms;
   };
 
-  public getRoomRecentConversation = async (roomId: any, currentOnlineUser: any) => {
-    const recentRooms = this.roomMsg.aggregate([
-      { $match: { chatRoomId: { $in: roomId } } },
+  public getRoomRecentConversation = async (roomIds: any, userId: any) => {
+    const recentRooms = await this.roomMsg.aggregate([
+      { $match: { chatRoomId: { $in: roomIds } } },
 
       {
         $project: {
           isUnread: {
-            $cond: [{ $in: [currentOnlineUser, '$readByRecipients.readByUserId'] }, 0, 1],
+            $cond: [{ $in: [userId, '$readByRecipients.readByUserId'] }, 0, 1],
           },
           chatRoomId: 1,
           message: 1,
           sendBy: 1,
           readByRecipients: 1,
+          isDeleted: 1,
           createdAt: 1,
         },
       },
@@ -64,16 +74,16 @@ class ChatRoomService {
       },
       { $sort: { createdAt: -1 } },
 
-      {
-        $lookup: {
-          from: 'chatRoom',
-          localField: '_id',
-          foreignField: '_id',
-          as: 'chat_roomInfo',
-        },
-      },
-      { $unwind: '$chat_roomInfo' },
-      { $sort: { createdAt: -1 } },
+      //   {
+      // $lookup: {
+      //   from: 'ChatRoom',
+      //   localField: 'chatRoomId',
+      //   foreignField: '_id',
+      //   as: 'chat_roomInfo',
+      // },
+      //   },
+      //   { $unwind: '$chat_roomInfo' },
+      //   { $sort: { createdAt: -1 } },
     ]);
     return recentRooms;
   };
@@ -126,23 +136,18 @@ class ChatRoomService {
         : toJoinChatRooms.length
         ? { toJoinChatRooms }
         : { joinedRoomsInfo };
-    return { joinedRoomsInfo, joinedChatRooms, toJoinChatRooms };
+    // return { joinedRoomsInfo, joinedChatRooms, toJoinChatRooms };
+    return result;
   };
 
   public addMembers = async (members: any, roomId: string) => {
-    const newRoom = await this.room.findByIdAndUpdate(roomId, { $push: { members: { $each: members } } });
+    const newRoom = await this.room.findByIdAndUpdate(roomId, { $addToSet: { members: { $each: members } } });
     return newRoom;
   };
 
-  public removeMember = async (roomId: string, adminId: string, members: any): Promise<any> => {
+  public removeMember = async (roomId: string, members: any): Promise<any> => {
     try {
-      const room = await this.room.findById(roomId);
-      if (!room) return 'not found';
-
-      if (adminId !== String(room.initiator)) return 'user not admin';
-
       await this.room.findByIdAndUpdate(roomId, { $pull: { members: { $in: members } } });
-
       return true;
     } catch (e) {
       return e;
@@ -169,16 +174,16 @@ class ChatRoomService {
     return true;
   };
 
-  public markMessageAsRead = async (chatRoomId: string, currentUserId: string): Promise<any> => {
+  public markMessageAsRead = async (chatRoomId: string, userId: string): Promise<any> => {
     try {
       await this.roomMsg.updateMany(
         {
           chatRoomId,
-          'readByRecipients.readByUserId': { $ne: currentUserId },
+          'readByRecipients.readByUserId': { $ne: userId },
         },
         {
           $addToSet: {
-            readByRecipients: { readByUserId: currentUserId },
+            readByRecipients: { readByUserId: userId },
           },
         },
         {

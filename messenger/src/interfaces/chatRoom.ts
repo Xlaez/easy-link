@@ -22,5 +22,5 @@ export interface IAddMembersBody {
 }
 
 export interface IRemoveMembersBody extends IAddMembersBody {
-  userId: string;
+  //   userId: string;
 }
