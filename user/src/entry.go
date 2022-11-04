@@ -1,6 +1,8 @@
 package src
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 const (
 	authPath  = "/api/v1/auth"
@@ -11,7 +13,12 @@ const (
 
 func (s *Server) Router() {
 	router := gin.Default()
-
+	// router.Use(func(ctx *gin.Context) {
+	// ServeWs(s.hub, ctx.Writer, ctx.Request)
+	// })
+	router.GET("/", func(ctx *gin.Context) {
+		ServeWs(s.hub, ctx.Writer, ctx.Request)
+	})
 	authRoutes := router.Group(authPath).Use(headersMiddleware)
 	oauthRoutes := router.Group(oauthPath).Use(headersMiddleware)
 	userRoutes := router.Group(userPath).Use(authMiddleware(s.tokenMaker)).Use(headersMiddleware)

@@ -39,11 +39,13 @@ func main() {
 	hub := src.NewHub()
 	go hub.Run()
 
-	connectDB(config)
+	//TODO: pass hub to server then make use of ServeWs function to handle websockets
+
+	connectDB(config, hub)
 	// initLayers(config)
 }
 
-func connectDB(config utils.Config) {
+func connectDB(config utils.Config, hub *src.Hub) {
 
 	conn, err := sql.Open(config.DbDriver, config.DbSource)
 
@@ -53,7 +55,7 @@ func connectDB(config utils.Config) {
 
 	store := db.NewStore(conn)
 
-	server, err := src.NewServer(store, config, ch)
+	server, err := src.NewServer(store, config, ch, hub)
 
 	if err != nil {
 		log.Fatal("Error: cannot initialize server ", err)

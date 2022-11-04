@@ -1,6 +1,8 @@
 package src
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Hub struct {
 	// Registered clients.
@@ -30,6 +32,7 @@ func (h *Hub) Run() {
 		select {
 		case client := <-h.register:
 			clientId := client.ID
+
 			for client := range h.clients {
 				msg := []byte("some one join room (ID: " + clientId + ")")
 				client.send <- msg

@@ -3,6 +3,7 @@ package src
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -135,7 +136,7 @@ func (c *Client) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
@@ -146,13 +147,28 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	client.ID = GenUserId()
 	client.Addr = conn.RemoteAddr().String()
 	client.EnterAt = time.Now()
-
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.
 	go client.writePump()
 	go client.readPump()
-
 	client.send <- []byte("Welcome")
+
+	mt, message, err := client.conn.ReadMessage()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// WARNING: don't make use of this......
+	// if clients message is connection
+	if string(message) == "connection" {
+		client.send <- []byte("pong")
+	}
+	// // response message to client
+	err = client.conn.WriteMessage(mt, message)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func GenUserId() string {

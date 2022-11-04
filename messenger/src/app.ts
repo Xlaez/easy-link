@@ -1,4 +1,4 @@
-import express, { Application, json, NextFunction, Response, urlencoded } from 'express';
+import express, { Application, json, NextFunction, Request, Response, urlencoded } from 'express';
 import morgan from 'morgan';
 import { CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT } from '@config';
 import hpp from 'hpp';
@@ -9,27 +9,25 @@ import helmet from 'helmet';
 import errorMiddleware from '@middlewares/error';
 import { Routes } from '@interfaces/routes';
 import connectDb from '@/config/db';
-import http from 'http';
+import http, { createServer } from 'http';
 import Socket from '@/socket';
+import getIo from '@/socket';
 
 class App {
   public app: Application;
   public env: string;
   public port: string | number;
-  public htp: http.Server;
-
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 8881;
-    this.htp = new http.Server(this.app);
     // Initialize middlewares here
+    this.initSocket();
     this.initializeMiddlewares();
     this.initalizeErrorHandling();
     this.initializeRoutes(routes);
     this.initializaDB();
   }
-
   public listen() {
     this.app.listen(this.port, () => {
       logger.info(`================================`);
@@ -39,15 +37,16 @@ class App {
     });
   }
 
+  public initSocket() {
+    const server = createServer(this.app);
+    new Socket().getIo(server);
+  }
+
   public getServer() {
     return this.app;
   }
 
   public initializeMiddlewares() {
-    this.app.use((req: any, res: Response, next: NextFunction) => {
-      req.io = new Socket().getIo(this.htp);
-      next();
-    });
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(helmet());

@@ -9,7 +9,6 @@ import { NextFunction, Request, Response } from 'express';
 class ChatRoomController {
   constructor() {}
   private service: ChatRoomService = new ChatRoomService();
-  private filter: FilterBannedWords = new FilterBannedWords();
 
   public createNew = async (req: Request, res: Response, next: NextFunction) => {
     const { body, file }: ICreateNewRoom = req;
@@ -53,7 +52,7 @@ class ChatRoomController {
 
     let payload = {};
     if (safeWords) {
-      const re: string | null = this.filter.filter(String(message));
+      const re: string | null = FilterBannedWords.filter(String(message));
       if (typeof re == 'string') return res.status(400).json({ status: 'success', data: re });
     }
 

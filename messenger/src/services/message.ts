@@ -134,9 +134,14 @@ class MsgService {
       },
       { $sort: { createdAt: -1 } },
     ]);
-    // for await (const doc of recentConv) {
-    //   console.log(doc);
-    // }
+    // recentConv
+    //   .explain('executionStats')
+    //   .then(r => {
+    // console.log(r);
+    //   })
+    //   .catch(err => {
+    // console.log(err);
+    //   });
     return recentConv;
   };
 

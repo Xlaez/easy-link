@@ -18,10 +18,11 @@ type Server struct {
 	config     utils.Config
 	router     *gin.Engine
 	// repo       messaging.Repo
-	ch *amqp.Channel
+	ch  *amqp.Channel
+	hub *Hub
 }
 
-func NewServer(store *db.Store, config utils.Config, ch *amqp.Channel) (*Server, error) {
+func NewServer(store *db.Store, config utils.Config, ch *amqp.Channel, hub *Hub) (*Server, error) {
 	tokenMaker, err := auth.NewPasteoMaker(config.TokenSymmetricKey)
 
 	if err != nil {
@@ -33,7 +34,8 @@ func NewServer(store *db.Store, config utils.Config, ch *amqp.Channel) (*Server,
 		tokenMaker: tokenMaker,
 		config:     config,
 		// repo:       repo,
-		ch: ch,
+		ch:  ch,
+		hub: hub,
 	}
 
 	server.Router()
